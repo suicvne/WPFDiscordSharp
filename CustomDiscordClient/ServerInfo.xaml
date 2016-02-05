@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomDiscordClient"
         mc:Ignorable="d"
-        Title="ServerInfo" Height="380" Width="300">
+        Title="ServerInfo" Height="244" Width="300">
     <Grid>
-        <Label x:Name="serverNameLabel" Content="Label" HorizontalAlignment="Center" Margin="127,87,0,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center"/>
-        <Image x:Name="serverIcon" HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="72" RenderTransformOrigin="0.5,0.5" MouseDown="serverIcon_MouseDown">
+        <Label x:Name="serverNameLabel" Content="Label" Margin="0,87,0,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center" Width="292"/>
+        <Image x:Name="serverIcon" HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="72" RenderTransformOrigin="0.5,0.5" MouseDown="serverIcon_MouseDown" Margin="110,5,110,0">
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>
         </Image>
-        <Label x:Name="channelsNumeber" Content="Number of Channels:" VerticalAlignment="Top" Margin="37,150,0,0" HorizontalAlignment="Center"/>
-        <Label x:Name="membersNumber" Content="Number of Members:" VerticalAlignment="Top" Margin="104,176,66,0" HorizontalAlignment="Center"/>
-        <Label x:Name="owner" Content="Owner: " VerticalAlignment="Top" Margin="104,202,66,0" HorizontalAlignment="Center"/>
+        <Label x:Name="channelsNumeber" Content="Number of Channels:" VerticalAlignment="Top" Margin="0,125,0,0" Width="292" HorizontalContentAlignment="Center"/>
+        <Label x:Name="membersNumber" Content="Number of Members:" VerticalAlignment="Top" Margin="0,151,0,0" Width="292" HorizontalContentAlignment="Center"/>
+        <Label x:Name="owner" Content="Owner: " VerticalAlignment="Top" Margin="0,177,0,0" Width="292" HorizontalContentAlignment="Center"/>
 
     </Grid>
 </Window>

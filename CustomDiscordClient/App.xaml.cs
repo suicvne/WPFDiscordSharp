@@ -17,10 +17,10 @@ namespace CustomDiscordClient
         [STAThread]
         public static void Main(string[] args)
         {
-            var app = new App();
-            //app.InitializeComponent();
-            
+            System.Windows.Forms.Application.EnableVisualStyles();
 
+            var app = new App();
+            
             if (!File.Exists("token_cache"))
             {
                 var loginWindow = new LoginForm();

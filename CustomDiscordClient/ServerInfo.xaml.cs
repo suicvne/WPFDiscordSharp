@@ -39,7 +39,7 @@ namespace CustomDiscordClient
             serverNameLabel.Content = Server.name;
             owner.Content = $"Owner: {Server.owner.Username} ({Server.owner.ID})";
             channelsNumeber.Content = $"Channels Count: {Server.channels.Count}";
-            membersNumber.Content = $"Members Count: {Server.channels.Count}";
+            membersNumber.Content = $"Members Count: {Server.members.Count}";
         }
         private int angle = 0;
         private void serverIcon_MouseDown(object sender, MouseButtonEventArgs e)

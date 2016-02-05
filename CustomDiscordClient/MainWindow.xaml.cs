@@ -24,9 +24,14 @@ namespace CustomDiscordClient
         DiscordClient MainClient;
         Task discordTask;
 
+        Uri MagicalDiscordIcon = new Uri("https://pbs.twimg.com/media/CSA9MacUcAAdY8h.png");
+
         public MainWindow()
         {
             InitializeComponent();
+            Icon = new BitmapImage(MagicalDiscordIcon);
+            channelsList.Visibility = Visibility.Hidden;
+
             MainClient = new DiscordClient();
 
             SetupEvents();
@@ -67,11 +72,35 @@ namespace CustomDiscordClient
 
         private void serversListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(serversListView.SelectedIndex > -1)
+            if (serversListView.SelectedIndex > -1)
             {
+
                 ServerStub stub = serversListView.SelectedItem as ServerStub;
                 ServerInfo info = new ServerInfo(stub.Server);
                 info.ShowDialog();
+            }
+        }
+
+        private void PopulateChannelsList(DiscordServer server)
+        {
+            channelsList.Items.Clear();
+            Dispatcher.Invoke(() =>
+            {
+                server.channels.ForEach(x => channelsList.Items.Add($"#{x.name}"));
+            });
+        }
+
+        private void serversListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (serversListView.SelectedIndex > -1)
+            {
+                channelsList.Visibility = Visibility.Visible;
+                var stub = serversListView.SelectedItem as ServerStub;
+                PopulateChannelsList(stub.Server);
+            }
+            else
+            {
+                channelsList.Visibility = Visibility.Hidden;
             }
         }
     }
