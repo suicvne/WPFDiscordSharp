@@ -1,0 +1,21 @@
+﻿<Window x:Name="window" x:Class="CustomDiscordClient.ServerInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CustomDiscordClient"
+        mc:Ignorable="d"
+        Title="ServerInfo" Height="380" Width="300">
+    <Grid>
+        <Label x:Name="serverNameLabel" Content="Label" HorizontalAlignment="Center" Margin="127,87,0,0" VerticalAlignment="Top" FontSize="21.333" HorizontalContentAlignment="Center"/>
+        <Image x:Name="serverIcon" HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="72" RenderTransformOrigin="0.5,0.5" MouseDown="serverIcon_MouseDown">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Label x:Name="channelsNumeber" Content="Number of Channels:" VerticalAlignment="Top" Margin="37,150,0,0" HorizontalAlignment="Center"/>
+        <Label x:Name="membersNumber" Content="Number of Members:" VerticalAlignment="Top" Margin="104,176,66,0" HorizontalAlignment="Center"/>
+        <Label x:Name="owner" Content="Owner: " VerticalAlignment="Top" Margin="104,202,66,0" HorizontalAlignment="Center"/>
+
+    </Grid>
+</Window>

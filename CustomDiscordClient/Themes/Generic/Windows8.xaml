@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Windows 8 WPF Theme Xaml</title>
+	<style type="text/css">
+	.csharpcode, .csharpcode pre
+	{
+		font-size: small;
+		color: black;
+		font-family: Consolas, "Courier New", Courier, Monospace;
+		background-color: #ffffff;
+		/*white-space: pre;*/
+	}
+
+	.csharpcode pre { margin: 0em; }
+
+	.csharpcode .rem { color: #008000; }
+
+	.csharpcode .kwrd { color: #0000ff; }
+
+	.csharpcode .str { color: #a31515; }
+
+	.csharpcode .op { color: #0000c0; }
+
+	.csharpcode .preproc { color: #cc6633; }
+
+	.csharpcode .asp { background-color: #ffff00; }
+
+	.csharpcode .html { color: #800000; }
+
+	.csharpcode .attr { color: #ff0000; }
+
+	.csharpcode .alt 
+	{
+		background-color: #f4f4f4;
+		width: 100%;
+		margin: 0em;
+	}
+
+	.csharpcode .lnum { color: #606060; }
+	</style>
+</head>
+<body>
+<div class="csharpcode">
+<pre><span class="kwrd">&lt;</span><span class="html">ResourceDictionary</span> <span class="attr">xmlns</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></pre>
+<pre>                    <span class="attr">xmlns:x</span><span class="kwrd">="http://schemas.microsoft.com/winfx/2006/xaml"</span><span class="kwrd">&gt;</span></pre>
+<pre>    <span class="kwrd">&lt;</span><span class="html">Style</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type TextBox}"</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Padding"</span> <span class="attr">Value</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="AllowDrop"</span> <span class="attr">Value</span><span class="kwrd">="true"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="ScrollViewer.PanningMode"</span> <span class="attr">Value</span><span class="kwrd">="VerticalFirst"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Stylus.IsFlicksEnabled"</span> <span class="attr">Value</span><span class="kwrd">="False"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Template"</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;</span><span class="html">ControlTemplate</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type TextBox}"</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">VisualStateGroup</span> <span class="attr">x:Name</span><span class="kwrd">="FocusStates"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Unfocused"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Focused"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="White"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#87bff0"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BordBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">VisualStateGroup</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">VisualStateGroup</span> <span class="attr">x:Name</span><span class="kwrd">="CommonStates"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Normal"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Disabled"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#EAEAEA"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span> <span class="attr">To</span><span class="kwrd">="0.6"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="PART_ContentHost"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(UIElement.Opacity)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="MouseOver"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="White"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#87bff0"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BordBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">VisualStateGroup</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">Border</span> <span class="attr">BorderThickness</span><span class="kwrd">="1"</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">SolidColorBrush</span> <span class="attr">Color</span><span class="kwrd">="#F9F9F9"</span> <span class="attr">x:Name</span><span class="kwrd">="BgBrush"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">SolidColorBrush</span> <span class="attr">Color</span><span class="kwrd">="LightGray"</span> <span class="attr">x:Name</span><span class="kwrd">="BordBrush"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">ScrollViewer</span> <span class="attr">Margin</span><span class="kwrd">="3"</span> <span class="attr">x:Name</span><span class="kwrd">="PART_ContentHost"</span> <span class="attr">SnapsToDevicePixels</span><span class="kwrd">="{TemplateBinding SnapsToDevicePixels}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">Border</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;/</span><span class="html">ControlTemplate</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;/</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;/</span><span class="html">Setter</span><span class="kwrd">&gt;</span></pre>
+<pre>    <span class="kwrd">&lt;/</span><span class="html">Style</span><span class="kwrd">&gt;</span></pre>
+<pre>    <span class="kwrd">&lt;</span><span class="html">Style</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type PasswordBox}"</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Background"</span> <span class="attr">Value</span><span class="kwrd">="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="FontFamily"</span> <span class="attr">Value</span><span class="kwrd">="Times New Roman"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="PasswordChar"</span> <span class="attr">Value</span><span class="kwrd">="?"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Foreground"</span> <span class="attr">Value</span><span class="kwrd">="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="KeyboardNavigation.TabNavigation"</span> <span class="attr">Value</span><span class="kwrd">="None"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="BorderThickness"</span> <span class="attr">Value</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="HorizontalContentAlignment"</span> <span class="attr">Value</span><span class="kwrd">="Left"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Padding"</span> <span class="attr">Value</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="FocusVisualStyle"</span> <span class="attr">Value</span><span class="kwrd">="{x:Null}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="AllowDrop"</span> <span class="attr">Value</span><span class="kwrd">="true"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="ScrollViewer.PanningMode"</span> <span class="attr">Value</span><span class="kwrd">="VerticalFirst"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Stylus.IsFlicksEnabled"</span> <span class="attr">Value</span><span class="kwrd">="False"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Template"</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;</span><span class="html">ControlTemplate</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type PasswordBox}"</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">VisualStateGroup</span> <span class="attr">x:Name</span><span class="kwrd">="FocusStates"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Unfocused"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Focused"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="White"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#87bff0"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BordBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">VisualStateGroup</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">VisualStateGroup</span> <span class="attr">x:Name</span><span class="kwrd">="CommonStates"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Normal"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Disabled"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#EAEAEA"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">DoubleAnimation</span> <span class="attr">To</span><span class="kwrd">="0.6"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="PART_ContentHost"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(UIElement.Opacity)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="MouseOver"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="White"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#87bff0"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BordBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.09"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">VisualStateGroup</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">Border</span> <span class="attr">BorderThickness</span><span class="kwrd">="1"</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">SolidColorBrush</span> <span class="attr">Color</span><span class="kwrd">="#F9F9F9"</span> <span class="attr">x:Name</span><span class="kwrd">="BgBrush"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">SolidColorBrush</span> <span class="attr">Color</span><span class="kwrd">="LightGray"</span> <span class="attr">x:Name</span><span class="kwrd">="BordBrush"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">ScrollViewer</span> <span class="attr">Margin</span><span class="kwrd">="3"</span> <span class="attr">x:Name</span><span class="kwrd">="PART_ContentHost"</span> <span class="attr">SnapsToDevicePixels</span><span class="kwrd">="{TemplateBinding SnapsToDevicePixels}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">Border</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;/</span><span class="html">ControlTemplate</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;/</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;/</span><span class="html">Setter</span><span class="kwrd">&gt;</span></pre>
+<pre>    <span class="kwrd">&lt;/</span><span class="html">Style</span><span class="kwrd">&gt;</span></pre>
+<pre>&nbsp;</pre>
+<pre>    <span class="kwrd">&lt;</span><span class="html">Style</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type Button}"</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="BorderThickness"</span> <span class="attr">Value</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Foreground"</span> <span class="attr">Value</span><span class="kwrd">="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="HorizontalContentAlignment"</span> <span class="attr">Value</span><span class="kwrd">="Center"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="VerticalContentAlignment"</span> <span class="attr">Value</span><span class="kwrd">="Center"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Padding"</span> <span class="attr">Value</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Template"</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;</span><span class="html">ControlTemplate</span> <span class="attr">TargetType</span><span class="kwrd">="{x:Type Button}"</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">VisualStateGroup</span> <span class="attr">x:Name</span><span class="kwrd">="CommonStates"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Normal"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#F0F0F0"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[0].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#E5E5E5"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[1].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#ACACAC"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BrBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="MouseOver"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#F0F4F9"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[0].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#E0ECF9"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[1].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#7EB4EA"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BrBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.07"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Pressed"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#DBEDFD"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[0].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.05"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#C4E0FC"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[1].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.05"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#569DE5"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BrBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0.05"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">VisualState</span> <span class="attr">x:Name</span><span class="kwrd">="Disabled"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#EFEFEF"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[0].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#EFEFEF"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BgBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="(GradientBrush.GradientStops)[1].(GradientStop.Color)"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                        <span class="kwrd">&lt;</span><span class="html">ColorAnimation</span> <span class="attr">To</span><span class="kwrd">="#D9D9D9"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetName</span><span class="kwrd">="BrBrush"</span> <span class="attr">Storyboard</span>.<span class="attr">TargetProperty</span><span class="kwrd">="Color"</span> <span class="attr">Duration</span><span class="kwrd">="0:0:0"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;/</span><span class="html">Storyboard</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">VisualState</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">VisualStateGroup</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">VisualStateManager.VisualStateGroups</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">Border</span> <span class="attr">x:Name</span><span class="kwrd">="Chrome"</span> <span class="attr">BorderThickness</span><span class="kwrd">="{TemplateBinding BorderThickness}"</span> <span class="attr">SnapsToDevicePixels</span><span class="kwrd">="true"</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">SolidColorBrush</span> <span class="attr">x:Name</span><span class="kwrd">="BrBrush"</span> <span class="attr">Color</span><span class="kwrd">="#ACACAC"</span> <span class="kwrd">/&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.BorderBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;</span><span class="html">LinearGradientBrush</span> <span class="attr">x:Name</span><span class="kwrd">="BgBrush"</span> <span class="attr">EndPoint</span><span class="kwrd">="0,1"</span> <span class="attr">StartPoint</span><span class="kwrd">="0,0"</span><span class="kwrd">&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">GradientStop</span> <span class="attr">Color</span><span class="kwrd">="#F0F0F0"</span> <span class="attr">Offset</span><span class="kwrd">="0"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                    <span class="kwrd">&lt;</span><span class="html">GradientStop</span> <span class="attr">Color</span><span class="kwrd">="#E5E5E5"</span> <span class="attr">Offset</span><span class="kwrd">="1"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                                <span class="kwrd">&lt;/</span><span class="html">LinearGradientBrush</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;/</span><span class="html">Border.Background</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">ContentPresenter</span> <span class="attr">HorizontalAlignment</span><span class="kwrd">="{TemplateBinding HorizontalContentAlignment}"</span> <span class="attr">Margin</span><span class="kwrd">="{TemplateBinding Padding}"</span> <span class="attr">RecognizesAccessKey</span><span class="kwrd">="True"</span> <span class="attr">SnapsToDevicePixels</span><span class="kwrd">="{TemplateBinding SnapsToDevicePixels}"</span> <span class="attr">VerticalAlignment</span><span class="kwrd">="{TemplateBinding VerticalContentAlignment}"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">Border</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;/</span><span class="html">Grid</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;</span><span class="html">ControlTemplate.Triggers</span><span class="kwrd">&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;</span><span class="html">Trigger</span> <span class="attr">Property</span><span class="kwrd">="IsEnabled"</span> <span class="attr">Value</span><span class="kwrd">="false"</span><span class="kwrd">&gt;</span></pre>
+<pre>                            <span class="kwrd">&lt;</span><span class="html">Setter</span> <span class="attr">Property</span><span class="kwrd">="Foreground"</span> <span class="attr">Value</span><span class="kwrd">="#ADADAD"</span><span class="kwrd">/&gt;</span></pre>
+<pre>                        <span class="kwrd">&lt;/</span><span class="html">Trigger</span><span class="kwrd">&gt;</span></pre>
+<pre>                    <span class="kwrd">&lt;/</span><span class="html">ControlTemplate.Triggers</span><span class="kwrd">&gt;</span></pre>
+<pre>                <span class="kwrd">&lt;/</span><span class="html">ControlTemplate</span><span class="kwrd">&gt;</span></pre>
+<pre>            <span class="kwrd">&lt;/</span><span class="html">Setter.Value</span><span class="kwrd">&gt;</span></pre>
+<pre>        <span class="kwrd">&lt;/</span><span class="html">Setter</span><span class="kwrd">&gt;</span></pre>
+<pre>    <span class="kwrd">&lt;/</span><span class="html">Style</span><span class="kwrd">&gt;</span></pre>
+<pre><span class="kwrd">&lt;/</span><span class="html">ResourceDictionary</span><span class="kwrd">&gt;</span></pre>
+</div>
+</body>
+</html>
