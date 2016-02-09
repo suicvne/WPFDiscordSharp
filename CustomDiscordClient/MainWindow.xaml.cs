@@ -1,4 +1,5 @@
 ﻿using DiscordSharp;
+using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace CustomDiscordClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<ServerView> openServerViews;
         DiscordClient MainClient;
         Task discordTask;
 
@@ -30,7 +32,7 @@ namespace CustomDiscordClient
         {
             InitializeComponent();
             Icon = new BitmapImage(MagicalDiscordIcon);
-            channelsList.Visibility = Visibility.Hidden;
+            //channelsList.Visibility = Visibility.Hidden;
 
             MainClient = new DiscordClient();
 
@@ -41,6 +43,8 @@ namespace CustomDiscordClient
 
             if(MainClient.SendLoginRequest() != null)
                 discordTask = Task.Run(() => MainClient.Connect());
+
+            openServerViews = new List<ServerView>();
         }
 
         private void SetupEvents()
@@ -54,6 +58,21 @@ namespace CustomDiscordClient
             };
             MainClient.TextClientDebugMessageReceived += (sender, e) =>
             {
+                //if(e.message.Level == MessageLevel.Critical)
+                //{
+                //    MessageBox.Show("Critical DiscordSharp Error Ocurred: " + e.message.Message);
+                //}
+            };
+            MainClient.MessageReceived += (sender, e) =>
+            {
+                DiscordServer serverIn = e.Channel.parent;
+                openServerViews.ForEach(x =>
+                {
+                    if(x.Server.id == serverIn.id)
+                    {
+                        x.AddMessage(e.message);
+                    }
+                });
             };
         }
 
@@ -65,7 +84,8 @@ namespace CustomDiscordClient
                 {
                     ServerStub stub = new ServerStub(server);
                     //serversListView.Items.Add(server.name);
-                    serversListView.Items.Add(stub);       
+                    
+                    serversListView.Items.Add(stub);
                 }
             });
         }
@@ -74,19 +94,29 @@ namespace CustomDiscordClient
         {
             if (serversListView.SelectedIndex > -1)
             {
-
                 ServerStub stub = serversListView.SelectedItem as ServerStub;
-                ServerInfo info = new ServerInfo(stub.Server);
-                info.ShowDialog();
+                ServerView view = new ServerView(stub.Server, MainClient);
+                view.Closed += (se, xe) =>
+                {
+                    openServerViews.Remove(se as ServerView);
+                };
+                openServerViews.Add(view);
+                view.Show();
+                //ServerInfo info = new ServerInfo(stub.Server);
+                //info.ShowDialog();
             }
         }
 
         private void PopulateChannelsList(DiscordServer server)
         {
-            channelsList.Items.Clear();
+            //channelsList.Items.Clear();
             Dispatcher.Invoke(() =>
             {
-                server.channels.ForEach(x => channelsList.Items.Add($"#{x.name}"));
+                server.channels.ForEach(x =>
+                {
+                    //if (x.type == "text")
+                    //    channelsList.Items.Add($"#{x.name}");
+                });
             });
         }
 
@@ -94,13 +124,13 @@ namespace CustomDiscordClient
         {
             if (serversListView.SelectedIndex > -1)
             {
-                channelsList.Visibility = Visibility.Visible;
+                //channelsList.Visibility = Visibility.Visible;
                 var stub = serversListView.SelectedItem as ServerStub;
                 PopulateChannelsList(stub.Server);
             }
             else
             {
-                channelsList.Visibility = Visibility.Hidden;
+                //channelsList.Visibility = Visibility.Hidden;
             }
         }
     }

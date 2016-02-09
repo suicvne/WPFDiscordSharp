@@ -11,8 +11,9 @@
             <Setter Property="FlowDirection" Value="LeftToRight"/>
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="0,0,-300,0">
         <Canvas HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="32" Background="#FF937979"/>
         <Image x:Name="serverIcon" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="32" Style="{DynamicResource ImageStyle1}"/>
+        <Label x:Name="serverNameLabel" Content="This is a really long server name" HorizontalAlignment="Left" Margin="37,3,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.395,-0.03"/>
     </Grid>
 </UserControl>

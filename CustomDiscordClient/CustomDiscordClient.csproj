@@ -41,15 +41,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DiscordSharp">
-      <HintPath>..\..\..\..\GitHub\DiscordSharp\DiscordSharp\bin\Debug\DiscordSharp.dll</HintPath>
-    </Reference>
     <Reference Include="NAudio">
-      <HintPath>..\..\..\..\GitHub\DiscordSharp\DiscordSharp\bin\Debug\NAudio.dll</HintPath>
+      <HintPath>.\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\GitHub\DiscordSharp\DiscordSharp\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>.\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="System" />
@@ -65,10 +61,10 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>..\..\..\..\GitHub\DiscordSharp\DiscordSharp\bin\Debug\websocket-sharp.dll</HintPath>
+      <HintPath>.\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="WebSocket4Net">
-      <HintPath>..\..\..\..\GitHub\DiscordSharp\DiscordSharp\bin\Debug\WebSocket4Net.dll</HintPath>
+      <HintPath>.\WebSocket4Net.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -80,6 +76,12 @@
     </Compile>
     <Compile Include="ServerStub.xaml.cs">
       <DependentUpon>ServerStub.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ServerView.xaml.cs">
+      <DependentUpon>ServerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInfo.xaml.cs">
+      <DependentUpon>UserInfo.xaml</DependentUpon>
     </Compile>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -112,6 +114,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ServerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -140,6 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DiscordSharp\DiscordSharp\DiscordSharp.csproj">
+      <Project>{a96ffe9e-3650-4976-872e-5bb336cc1589}</Project>
+      <Name>DiscordSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

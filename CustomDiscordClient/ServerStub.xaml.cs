@@ -1,4 +1,5 @@
 ﻿using DiscordSharp;
+using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,8 @@ namespace CustomDiscordClient
 
             if (server.IconURL != null)
                 serverIcon.Source = new BitmapImage(new Uri(server.IconURL));
-            
+            serverNameLabel.Content = server.name;
+
             this.ToolTip = server.name;
         }
     }
