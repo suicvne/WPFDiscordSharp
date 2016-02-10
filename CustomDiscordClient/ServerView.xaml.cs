@@ -104,6 +104,7 @@ namespace CustomDiscordClient
                 messageView.Text += $"<{author}> Posted an attachment. Coming soon!" + Environment.NewLine;
             else
                 messageView.Text += $"<{author}> {m.content}" + Environment.NewLine;
+            messageView.ScrollToEnd();
         }
 
         public void LoadChannel(DiscordChannel channel)
