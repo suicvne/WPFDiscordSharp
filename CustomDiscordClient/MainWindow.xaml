@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="421.629" Width="618.097">
     <Grid>
-        <ListView x:Name="serversListView" HorizontalAlignment="Left" Height="{Binding Height, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" Width="610" MouseDoubleClick="serversListView_MouseDoubleClick" SelectionChanged="serversListView_SelectionChanged">
+        <ListView x:Name="serversListView" MouseDoubleClick="serversListView_MouseDoubleClick" SelectionChanged="serversListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridView.ColumnHeaderContextMenu>

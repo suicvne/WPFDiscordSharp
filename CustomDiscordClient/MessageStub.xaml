@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CustomDiscordClient"
-             mc:Ignorable="d" Height="71" Width="405.5">
+             mc:Ignorable="d" MinHeight="71">
     <Grid>
         <Image x:Name="userAvatar" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" VerticalAlignment="Top" Width="40" MaxWidth="40" MaxHeight="40"/>
         <Label x:Name="usernameLabel" Content="Label" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="SemiBold"/>

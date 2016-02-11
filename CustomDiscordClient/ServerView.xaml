@@ -5,14 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomDiscordClient"
         mc:Ignorable="d"
-        Title="ServerView" Height="398.662" Width="671.201">
+        Title="ServerView" Height="404.162" Width="678.201">
     <Grid>
-        <ListBox x:Name="channelsListBox" HorizontalAlignment="Left" Height="363" Width="100" MouseDoubleClick="channelsListBox_MouseDoubleClick"/>
-        <ListBox x:Name="membersListBox" HorizontalAlignment="Right" Height="363" Width="100" Margin="563,0,0,0" MouseDoubleClick="membersListBox_MouseDoubleClick"/>
+        <ListBox x:Name="channelsListBox" HorizontalAlignment="Left" Width="100" MouseDoubleClick="channelsListBox_MouseDoubleClick" Margin="0,6"/>
+        <ListBox x:Name="membersListBox" HorizontalAlignment="Right" Width="100" Margin="563,6,0,6" MouseDoubleClick="membersListBox_MouseDoubleClick"/>
         <TextBox x:Name="messageView" HorizontalAlignment="Left" Height="335" Margin="105,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="453" IsEnabled="False" Visibility="Hidden"/>
-        <TextBox x:Name="messageToSend" HorizontalAlignment="Left" Height="23" Margin="105,326,0,6" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Width="373" KeyDown="messageToSend_KeyDown"/>
-        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" Margin="483,326,0,6" VerticalAlignment="Bottom" Width="75" Height="23" Click="sendButton_Click"/>
-        <ListBox x:Name="messagesList" Height="335" Width="453" Margin="2,0,0,31"/>
-
+        <TextBox x:Name="messageToSend" Height="23" Margin="107,327,193,6" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" KeyDown="messageToSend_KeyDown"/>
+        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Right" Margin="483,326,113,6" VerticalAlignment="Bottom" Width="75" Height="23" Click="sendButton_Click"/>
+        <ListBox x:Name="messagesList" Height="Auto" Width="Auto" DockPanel.Dock="Top"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="106,5,111,36"/>
     </Grid>
 </Window>
