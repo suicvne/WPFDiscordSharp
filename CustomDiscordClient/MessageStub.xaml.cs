@@ -55,8 +55,11 @@ namespace CustomDiscordClient
                     }
                 });
             }
-            
-            userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
+
+            if (Message.author.Avatar == null)
+                userAvatar.Source = new BitmapImage(DiscordClientConfig.DefaultAvatarBlue);
+            else
+                userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
             if (Message.content.Trim() == "" && Message.attachments.Length > 0)
                 message.Text = "Attachment posted. Coming soon!";
             else

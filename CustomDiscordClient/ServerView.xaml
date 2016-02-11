@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="ServerView" Height="404.162" Width="678.201">
     <Grid>
-        <ListBox x:Name="channelsListBox" HorizontalAlignment="Left" Width="100" MouseDoubleClick="channelsListBox_MouseDoubleClick" Margin="0,6"/>
-        <ListBox x:Name="membersListBox" HorizontalAlignment="Right" Width="100" Margin="563,6,0,6" MouseDoubleClick="membersListBox_MouseDoubleClick"/>
+        <ListBox x:Name="channelsListBox" MouseDoubleClick="channelsListBox_MouseDoubleClick" Margin="5,6,0,6" MaxWidth="121" HorizontalAlignment="Left" Width="121"/>
+        <ListBox x:Name="membersListBox" Margin="0,6,1,6" MouseDoubleClick="membersListBox_MouseDoubleClick" MaxWidth="121" Width="121" HorizontalAlignment="Right"/>
         <TextBox x:Name="messageView" HorizontalAlignment="Left" Height="335" Margin="105,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="453" IsEnabled="False" Visibility="Hidden"/>
-        <TextBox x:Name="messageToSend" Height="23" Margin="107,327,193,6" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" KeyDown="messageToSend_KeyDown"/>
-        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Right" Margin="483,326,113,6" VerticalAlignment="Bottom" Width="75" Height="23" Click="sendButton_Click"/>
-        <ListBox x:Name="messagesList" Height="Auto" Width="Auto" DockPanel.Dock="Top"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="106,5,111,36"/>
+        <TextBox x:Name="messageToSend" Height="23" Margin="140,327,193,6" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" KeyDown="messageToSend_KeyDown"/>
+        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,139,6" VerticalAlignment="Bottom" Width="49" Height="23" Click="sendButton_Click"/>
+        <ListBox x:Name="messagesList" Height="Auto" Width="Auto" DockPanel.Dock="Top"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="139,5,139,36"/>
     </Grid>
 </Window>

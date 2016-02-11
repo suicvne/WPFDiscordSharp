@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 
 namespace CustomDiscordClient
 {
@@ -22,6 +24,30 @@ namespace CustomDiscordClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Notification stuffs
+        private const string APP_ID = "MikeSantiago.CustomDiscord";
+        private void ShowToast(string text, int timeout)
+        {
+            XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText04);
+            Console.WriteLine(toastXml.ToString());
+            XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+            for(int i = 0; i < stringElements.Length; i++)
+            {
+                stringElements[i].AppendChild(toastXml.CreateTextNode(text));
+            }
+            /*
+            String imagePath = "file:///" + Path.GetFullPath("toastImageAndText.png");
+            XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
+            imageElements[0].Attributes.GetNamedItem("src").NodeValue = imagePath;
+            */
+
+            ToastNotification toast = new ToastNotification(toastXml);
+
+            ToastNotificationManager.CreateToastNotifier(APP_ID).Show(toast);
+        }
+        #endregion
+
+
         private List<ServerView> openServerViews;
         DiscordClient MainClient;
         Task discordTask;
@@ -65,7 +91,11 @@ namespace CustomDiscordClient
             };
             MainClient.MentionReceived += (sender, e) =>
             {
+                string toReplace = $"<@{MainClient.Me.ID}>";
+                string message = e.message.content;
+                message = message.Replace(toReplace, $"@{MainClient.Me.Username}");
 
+                ShowToast($"Mention received from {e.author.Username}\n{message}", 666);
             };
             MainClient.SocketClosed += (sender, e) =>
             {
@@ -92,6 +122,7 @@ namespace CustomDiscordClient
         {
             Dispatcher.Invoke(() =>
             {
+                serversListView.Items.Clear();
                 foreach (var server in MainClient.GetServersList())
                 {
                     ServerStub stub = new ServerStub(server);
