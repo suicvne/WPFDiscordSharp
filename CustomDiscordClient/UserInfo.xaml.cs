@@ -50,6 +50,8 @@ namespace CustomDiscordClient
             Title = "User info for " + Member.Username;
             if (member.CurrentGame != null)
                 userID.Content = $"Playing {member.CurrentGame}";
+            else
+                userID.Content = "";
 
             foreach(var server in mainClientReference.GetServersList())
             {

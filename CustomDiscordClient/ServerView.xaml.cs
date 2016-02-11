@@ -68,6 +68,8 @@ namespace CustomDiscordClient
                             messageHistory.ForEach(m => messageHistoryCache.Add(m));
                         }
                     }
+                    messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                    messagesList.ScrollIntoView(messagesList.SelectedItem);
                 });
             });
 
@@ -96,20 +98,22 @@ namespace CustomDiscordClient
 
         private void AppendMessage(DiscordMessage m)
         {
-            string author = "<Removed User>";
-            if (m.author != null)
-                author = m.author.Username;
+            MessageStub stub = new MessageStub(m);
+            messagesList.Items.Add(stub);
+            //string author = "<Removed User>";
+            //if (m.author != null)
+            //    author = m.author.Username;
 
-            if (m.content.Trim() == "" && m.attachments != null)
-                messageView.Text += $"<{author}> Posted an attachment. Coming soon!" + Environment.NewLine;
-            else
-                messageView.Text += $"<{author}> {m.content}" + Environment.NewLine;
-            messageView.ScrollToEnd();
+            //if (m.content.Trim() == "" && m.attachments != null)
+            //    messageView.Text += $"<{author}> Posted an attachment. Coming soon!" + Environment.NewLine;
+            //else
+            //    messageView.Text += $"<{author}> {m.content}" + Environment.NewLine;
         }
 
         public void LoadChannel(DiscordChannel channel)
         {
-            messageView.Text = "";
+            //messageView.Text = "";
+            messagesList.Items.Clear();
             foreach(var m in messageHistoryCache)
             {
                 if(m.Channel() == channel)
@@ -118,6 +122,8 @@ namespace CustomDiscordClient
                     Title = $"Discord - {Server.name} - #{channel.Name}";
                 }
             }
+            messagesList.SelectedIndex = messagesList.Items.Count - 1;
+            messagesList.ScrollIntoView(messagesList.SelectedItem);
         }
 
         public void UpdateServer(DiscordServer server)
@@ -140,7 +146,11 @@ namespace CustomDiscordClient
         private void SendMessage(string message)
         {
             if (currentChannel != null && !string.IsNullOrEmpty(message))
+            {
                 currentChannel.SendMessage(message);
+                messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                messagesList.ScrollIntoView(messagesList.SelectedItem);
+            }
         }
 
         private void sendButton_Click(object sender, RoutedEventArgs e)

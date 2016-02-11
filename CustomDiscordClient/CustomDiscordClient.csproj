@@ -71,6 +71,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MessageStub.xaml.cs">
+      <DependentUpon>MessageStub.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServerInfo.xaml.cs">
       <DependentUpon>ServerInfo.xaml</DependentUpon>
     </Compile>
@@ -106,6 +109,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MessageStub.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ServerInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,7 +159,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DiscordSharp\DiscordSharp\DiscordSharp.csproj">
+    <ProjectReference Include="..\..\DiscordSharp\DiscordSharp.csproj">
       <Project>{a96ffe9e-3650-4976-872e-5bb336cc1589}</Project>
       <Name>DiscordSharp</Name>
     </ProjectReference>

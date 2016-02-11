@@ -63,6 +63,18 @@ namespace CustomDiscordClient
                 //    MessageBox.Show("Critical DiscordSharp Error Ocurred: " + e.message.Message);
                 //}
             };
+            MainClient.MentionReceived += (sender, e) =>
+            {
+
+            };
+            MainClient.SocketClosed += (sender, e) =>
+            {
+                Dispatcher.Invoke(() => Title = "Connection lost, retrying..");
+                discordTask.Dispose();
+                Task.Delay(3000).Wait();
+                if (MainClient.SendLoginRequest() != null)
+                    discordTask = Task.Run(() => MainClient.Connect());
+            };
             MainClient.MessageReceived += (sender, e) =>
             {
                 DiscordServer serverIn = e.Channel.parent;
