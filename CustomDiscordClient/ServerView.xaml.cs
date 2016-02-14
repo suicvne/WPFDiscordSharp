@@ -100,6 +100,7 @@ namespace CustomDiscordClient
         {
             MessageStub stub = new MessageStub(m);
             messagesList.Items.Add(stub);
+            messagesList.ScrollIntoView(messagesList.Items[messagesList.Items.Count - 1]);
             //string author = "<Removed User>";
             //if (m.author != null)
             //    author = m.author.Username;

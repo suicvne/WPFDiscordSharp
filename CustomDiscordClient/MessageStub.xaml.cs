@@ -1,6 +1,8 @@
 ﻿using DiscordSharp.Objects;
+using Markdown.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,15 +57,20 @@ namespace CustomDiscordClient
                     }
                 });
             }
+            if(Message.author != null)
+                if (Message.author.Avatar == null)
+                    userAvatar.Source = new BitmapImage(DiscordClientConfig.DefaultAvatarBlue);
+                else
+                    userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
 
-            if (Message.author.Avatar == null)
-                userAvatar.Source = new BitmapImage(DiscordClientConfig.DefaultAvatarBlue);
-            else
-                userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
             if (Message.content.Trim() == "" && Message.attachments.Length > 0)
                 message.Text = "Attachment posted. Coming soon!";
             else
+            {
+                var x = Resources.FindName("TextToFlowConverter") as TextToFlowDocumentConverter;
+                messageAsRtf.Document = x.Convert(Message.content, typeof(FlowDocument), messageAsRtf.Document, CultureInfo.CurrentCulture) as FlowDocument;
                 message.Text = Message.content;
+            }
         }
     }
 }

@@ -35,6 +35,8 @@ namespace CustomDiscordClient
 
         Uri MagicalDiscordIcon = new Uri("https://pbs.twimg.com/media/CSA9MacUcAAdY8h.png");
 
+        string lastNotification;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -42,6 +44,7 @@ namespace CustomDiscordClient
             //channelsList.Visibility = Visibility.Hidden;
 
             MainClient = new DiscordClient();
+            MainClient.RequestAllUsersOnStartup = true;
 
             SetupEvents();
 
@@ -54,14 +57,18 @@ namespace CustomDiscordClient
             openServerViews = new List<ServerView>();
         }
 
+        [STAThread]
         private void SetupEvents()
         {
             MainClient.Connected += (sender, e) =>
             {
                 Dispatcher.Invoke(()=>this.Title = "Discord - " + e.user.Username);
                 PopulateLists();
-
-                Dispatcher.Invoke(()=> Mouse.OverrideCursor = null);
+                
+                Dispatcher.Invoke(()=>
+                {
+                    Mouse.OverrideCursor = null;
+                });
             };
             MainClient.TextClientDebugMessageReceived += (sender, e) =>
             {
@@ -76,7 +83,45 @@ namespace CustomDiscordClient
                 string message = e.message.content;
                 message = message.Replace(toReplace, $"@{MainClient.Me.Username}");
 
-                toastManager.CreateToast($"Mention received from {e.author.Username}\n{message}");
+                if (e.author.Avatar != null)
+                {
+                    e.author.GetAvatar().Save("temp.png");
+                }
+                string messageToShow = e.message.content;
+                string idToReplace = $"<@{MainClient.Me.ID}>";
+                messageToShow = messageToShow.Replace(idToReplace, $"@{MainClient.Me.Username}");
+                var toast = toastManager.CreateToast(System.IO.Path.GetFullPath("temp.png"), $"Mention received from {e.author.Username}", $"{messageToShow}", "");
+                lastNotification = $"{e.Channel.parent.id}:{e.Channel.ID}"; //server:channel
+                toast.Activated += (sxc, exc) =>
+                {
+                    string[] split = lastNotification.Split(new char[] { ':' }, 2);
+                    lastNotification = null;
+                    string serverID = split[0];
+                    string channelID = split[1];
+                    bool hasServer = false;
+                    foreach (var serverView in openServerViews)
+                        if (serverView.Server.id == serverID)
+                            hasServer = true;
+
+                    if (hasServer)
+                        openServerViews.Find(x => x.Server.id == serverID).Show();
+                    else
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.id == serverID), MainClient);
+                            view.Closed += (x, f) =>
+                            {
+                                openServerViews.Remove(x as ServerView);
+                            };
+                            openServerViews.Add(view);
+                            view.LoadChannel(view.Server.channels.Find(x => x.ID == channelID));
+                            view.Show();
+                        });
+                    }
+                };
+
+                ToastNotificationManager.CreateToastNotifier(toastManager.GetAppID).Show(toast);
             };
             MainClient.SocketClosed += (sender, e) =>
             {
@@ -97,8 +142,6 @@ namespace CustomDiscordClient
                     }
                 });
             };
-
-            ToastNotificationManager.CreateToastNotifier(toastManager.GetAppID).Show(toastManager.CreateToast("DiscordWPF", "yum", "topkek"));
         }
 
         private void PopulateLists()
