@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="ButteredToast.cs" />
     <Compile Include="DiscordClientConfig.cs" />
+    <Compile Include="DiscordDowns.cs" />
     <Compile Include="MessageStub.xaml.cs">
       <DependentUpon>MessageStub.xaml</DependentUpon>
     </Compile>
@@ -195,7 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="kek.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>

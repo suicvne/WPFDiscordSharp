@@ -67,10 +67,18 @@ namespace CustomDiscordClient
                 message.Text = "Attachment posted. Coming soon!";
             else
             {
-                var x = Resources.FindName("TextToFlowConverter") as TextToFlowDocumentConverter;
-                messageAsRtf.Document = x.Convert(Message.content, typeof(FlowDocument), messageAsRtf.Document, CultureInfo.CurrentCulture) as FlowDocument;
+                richTextBox.Document.Blocks.Clear();
+                DiscordChannel channel = Message.Channel() as DiscordChannel;
+                var markdownParser = new CustomDiscordClient.Markdown(channel.parent, null);
+                var blocks = markdownParser.Transform(Message.content, $"{Message.id};{channel.ID}");
+                richTextBox.Document.Blocks.AddRange(blocks);
                 message.Text = Message.content;
             }
+        }
+
+        private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

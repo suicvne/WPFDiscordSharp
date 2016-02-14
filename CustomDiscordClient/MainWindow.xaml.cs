@@ -104,7 +104,9 @@ namespace CustomDiscordClient
                             hasServer = true;
 
                     if (hasServer)
-                        openServerViews.Find(x => x.Server.id == serverID).Show();
+                    {
+                        Dispatcher.Invoke(()=>openServerViews.Find(x => x.Server.id == serverID).Show());
+                    }
                     else
                     {
                         Dispatcher.Invoke(() =>

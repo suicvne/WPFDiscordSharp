@@ -23,8 +23,15 @@
         <Image x:Name="userAvatar" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" VerticalAlignment="Top" Width="40" MaxWidth="40" MaxHeight="40"/>
         <Label x:Name="usernameLabel" Content="Label" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="SemiBold"/>
         
-        <TextBlock x:Name="message" TextWrapping="WrapWithOverflow" Text="This is a test of a really extremely long message " HorizontalAlignment="Left" Margin="58,35,0,0" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True"/>
-        
+        <TextBlock x:Name="message" Visibility="Hidden" TextWrapping="WrapWithOverflow" Text="This is a test of a really extremely long message " HorizontalAlignment="Left" Margin="58,35,0,0" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True"/>
+        <RichTextBox x:Name="richTextBox" Margin="58,35,0,0" TextChanged="richTextBox_TextChanged" IsReadOnly="True" BorderThickness="0" Background="{x:Null}">
+            <FlowDocument AllowDrop="False" IsEnabled="False" PageWidth="{Binding ElementName=richTextBox, Path=ActualWidth}">
+                <Paragraph>
+                    <Run Text="fuck you wpf"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
 
     </Grid>
 </UserControl>
