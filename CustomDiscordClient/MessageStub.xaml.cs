@@ -37,6 +37,11 @@ namespace CustomDiscordClient
             RefreshContent();
         }
 
+        private void SetTheme()
+        {
+            usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+        }
+
         public void RefreshContent()
         {
             if (Message.author == null)
@@ -46,7 +51,7 @@ namespace CustomDiscordClient
                 usernameLabel.Content = Message.author.Username;
                 Message.author.Roles.ForEach(x =>
                 {
-                    if (x.position > -1)
+                    if (x.position > -1 && x.name != "@everyone")
                     {
                         Color roleColour = new Color();
                         roleColour.A = 255;
@@ -55,6 +60,8 @@ namespace CustomDiscordClient
                         roleColour.B = (byte)x.color.B;
                         usernameLabel.Foreground = new SolidColorBrush(roleColour);
                     }
+                    else
+                        usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
                 });
             }
             if(Message.author != null)
@@ -63,9 +70,7 @@ namespace CustomDiscordClient
                 else
                     userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
 
-            if (Message.content.Trim() == "" && Message.attachments.Length > 0)
-                message.Text = "Attachment posted. Coming soon!";
-            else
+            
             {
                 richTextBox.Document.Blocks.Clear();
                 DiscordChannel channel = Message.Channel() as DiscordChannel;
@@ -73,6 +78,8 @@ namespace CustomDiscordClient
                 var blocks = markdownParser.Transform(Message.content, $"{Message.id};{channel.ID}");
                 richTextBox.Document.Blocks.AddRange(blocks);
                 message.Text = Message.content;
+                if (Message.content.Trim() == "" && Message.attachments.Length > 0)
+                    message.Text = "Attachment posted. Coming soon!";
             }
         }
 

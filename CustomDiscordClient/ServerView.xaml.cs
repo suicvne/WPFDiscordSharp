@@ -16,11 +16,40 @@ using System.Windows.Shapes;
 
 namespace CustomDiscordClient
 {
+    public static class Exetn
+    {
+        public static IEnumerable<Visual> GetChildren(this DependencyObject parent, bool recurse = true)
+        {
+            if (parent != null)
+            {
+                int count = VisualTreeHelper.GetChildrenCount(parent);
+                for (int i = 0; i < count; i++)
+                {
+                    // Retrieve child visual at specified index value.
+                    var child = VisualTreeHelper.GetChild(parent, i) as Visual;
+
+                    if (child != null)
+                    {
+                        yield return child;
+
+                        if (recurse)
+                        {
+                            foreach (var grandChild in child.GetChildren(true))
+                            {
+                                yield return grandChild;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     /// <summary>
     /// Interaction logic for ServerView.xaml
     /// </summary>
     public partial class ServerView : Window
     {
+        //TODO: make side lists collapseable
         public DiscordServer Server {
             get; internal set;
         }
@@ -28,9 +57,12 @@ namespace CustomDiscordClient
         private List<DiscordMessage> messageHistoryCache = new List<DiscordMessage>();
         private DiscordChannel currentChannel;
 
+        List<Key> _pressedKeys = new List<Key>(); //ew
+
         public ServerView()
         {
             InitializeComponent();
+            SetTheme();
         }
 
         public ServerView(DiscordServer server)
@@ -38,6 +70,7 @@ namespace CustomDiscordClient
             InitializeComponent();
             Server = server;
             RefreshContent();
+            SetTheme();
         }
         public ServerView(DiscordServer server, DiscordClient client)
         {
@@ -45,6 +78,49 @@ namespace CustomDiscordClient
             mainClientReference = client;
             Server = server;
             RefreshContent();
+            SetTheme();
+        }
+
+        private void SetTheme()
+        {
+            if (DiscordClientConfig.DarkTheme)
+            {
+                this.Background = DiscordClientConfig.DarkThemeBackground;
+                Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                channelsListBox.Background = DiscordClientConfig.DarkThemeBackground;
+                channelsListBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                membersListBox.Background = DiscordClientConfig.DarkThemeBackground;
+                membersListBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                messagesList.Background = DiscordClientConfig.DarkThemeBackground;
+                messagesList.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                messageToSend.Background = messagesList.Background;
+                messageToSend.Foreground = messagesList.Foreground;
+
+                foreach(var element in this.GridContainer.Children)
+                {
+                    try
+                    {
+                        if ((element as Control).Name == "messageToSend")
+                            continue;
+                        (element as Control).BorderThickness = new Thickness(0);
+                    }
+                    catch { }
+                }
+                foreach(var element in this.AutoSizer.Children)
+                {
+                    try
+                    {
+                        if ((element as Control).Name == "messageToSend")
+                            continue;
+                        (element as Control).BorderThickness = new Thickness(0);
+                    }
+                    catch { }
+                }
+            }
         }
 
         private void RefreshContent()
@@ -88,6 +164,34 @@ namespace CustomDiscordClient
             LoadChannel(currentChannel);
         }
 
+        int channelsSelectedIndex;
+        public int ChSelectedIndex
+        {
+            get
+            {
+                return channelsSelectedIndex;
+            }
+            set
+            {
+                if (channelsSelectedIndex == value)
+                    return;
+
+                channelsSelectedIndex = value;
+                RaisePropertyChanged(() => ChSelectedIndex);
+            }
+        }
+        private void RaisePropertyChanged(Func<int> p)
+        {
+            if (channelsListBox.SelectedIndex > -1)
+            {
+                currentChannel = Server.channels.Find(x => x.Name == channelsListBox.Items[channelsSelectedIndex].ToString().Substring(1));
+                if (currentChannel != null)
+                {
+                    LoadChannel(currentChannel);
+                }
+            }
+        }
+
         public void AddMessage(DiscordMessage message)
         {
             DiscordChannel channel = Convert.ChangeType(message.Channel(), typeof(DiscordChannel));
@@ -113,7 +217,6 @@ namespace CustomDiscordClient
 
         public void LoadChannel(DiscordChannel channel)
         {
-            //messageView.Text = "";
             messagesList.Items.Clear();
             foreach(var m in messageHistoryCache)
             {
@@ -134,14 +237,7 @@ namespace CustomDiscordClient
 
         private void channelsListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(channelsListBox.SelectedIndex > -1)
-            {
-                currentChannel = Server.channels.Find(x => x.Name == channelsListBox.SelectedItem.ToString().Substring(1));
-                if(currentChannel != null)
-                {
-                    LoadChannel(currentChannel);
-                }
-            }
+            //TODO: channel info
         }
 
         private void SendMessage(string message)
@@ -162,8 +258,11 @@ namespace CustomDiscordClient
 
         private void messageToSend_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
+            {}
+            else if (Keyboard.IsKeyDown(Key.Enter))
             {
+                //messageToSend.Text += Environment.NewLine;
                 SendMessage(messageToSend.Text);
                 messageToSend.Clear();
             }
@@ -171,15 +270,46 @@ namespace CustomDiscordClient
 
         private void membersListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if(membersListBox.SelectedIndex > -1)
+            if (membersListBox.SelectedIndex > -1)
             {
                 DiscordMember member = Server.members.Find(x => x.Username == membersListBox.SelectedItem.ToString());
-                if(member != null)
+                if (member != null)
                 {
                     UserInfo info = new UserInfo(member, mainClientReference);
                     info.ShowDialog();
                 }
             }
         }
+        
+        private void messageToSend_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _pressedKeys.Clear();
+        }
+
+        private void messageToSend_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift)
+            {
+                messageToSend.AcceptsReturn = true;
+            }
+            if((ModifierKeys.Shift & Keyboard.Modifiers) == ModifierKeys.Shift)
+            {
+                if(Keyboard.IsKeyDown(Key.Enter))
+                {
+                    messageToSend.Text += Environment.NewLine;
+                    messageToSend.CaretIndex = messageToSend.Text.Length - 1;
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void messageToSend_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift)
+            {
+                messageToSend.AcceptsReturn = false;
+            }
+        }
+
     }
 }

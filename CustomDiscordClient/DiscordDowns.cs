@@ -141,6 +141,8 @@ namespace CustomDiscordClient
             {
                 b.Tag = id;
                 b.ContextMenu = _contextMenu;
+                if (DiscordClientConfig.DarkTheme)
+                    b.Foreground = DiscordClientConfig.DarkThemeForeground;
                 final.Add(b);
             }
 
@@ -754,11 +756,22 @@ namespace CustomDiscordClient
             }
 
             string span = match.Groups[2].Value;
-            span = Regex.Replace(span, @"^[ ]*", ""); // leading whitespace
-            span = Regex.Replace(span, @"[ ]*$", ""); // trailing whitespace
+            //span = Regex.Replace(span, @"^[ ]*", ""); // leading whitespace
+            //span = Regex.Replace(span, @"[ ]*$", ""); // trailing whitespace
 
             var result = new Run(span);
             result.FontFamily = new FontFamily("Source Code Pro");
+            result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 200, G = 200, B = 200, A = 255 });
+            if (DiscordClientConfig.DarkTheme)
+                result.Foreground = DiscordClientConfig.DarkThemeForeground;
+            //result.MouseEnter += (sender, e) =>
+            //{
+            //    result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 0 });
+            //};
+            //result.MouseLeave += (sender, e) =>
+            //{
+            //    result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 255 });
+            //};
             if (CodeStyle != null)
             {
                 result.Style = CodeStyle;
@@ -903,9 +916,23 @@ namespace CustomDiscordClient
                 ilist.Add(i);
 
                 var result = new Hyperlink(i);
+                result.FontWeight = FontWeights.Bold;
                 result.IsEnabled = true;
 
-
+                System.Windows.Media.Color roleColour = new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 255 };
+                if (DiscordClientConfig.DarkTheme)
+                    roleColour = DiscordClientConfig.ColorDarkForeground;
+                u.Roles.ForEach(x =>
+                {
+                    if(x.position > -1)
+                    {
+                        roleColour.A = 255;
+                        roleColour.R = (byte)x.color.R;
+                        roleColour.G = (byte)x.color.G;
+                        roleColour.B = (byte)x.color.B;
+                    }
+                });
+                result.Foreground = new SolidColorBrush(roleColour);
 
                 result.CommandParameter = null;
                 result.Command = null;

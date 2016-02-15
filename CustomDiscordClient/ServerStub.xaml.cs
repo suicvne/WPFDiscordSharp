@@ -39,6 +39,7 @@ namespace CustomDiscordClient
         public ServerStub()
         {
             InitializeComponent();
+            SetupTheme();
         }
 
         public ServerStub(DiscordServer server)
@@ -51,6 +52,13 @@ namespace CustomDiscordClient
             serverNameLabel.Content = server.name;
 
             this.ToolTip = server.name;
+            SetupTheme();
+        }
+
+        private void SetupTheme()
+        {
+            if(DiscordClientConfig.DarkTheme)
+                serverNameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
         }
     }
 }

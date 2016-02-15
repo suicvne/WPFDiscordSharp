@@ -55,6 +55,18 @@ namespace CustomDiscordClient
                 discordTask = Task.Run(() => MainClient.Connect());
 
             openServerViews = new List<ServerView>();
+
+            SetupTheme();
+        }
+
+        private void SetupTheme()
+        {
+            if (DiscordClientConfig.DarkTheme)
+            {
+                serversListView.Foreground = DiscordClientConfig.DarkThemeForeground;
+                serversListView.Background = DiscordClientConfig.DarkThemeBackground;
+                serversListView.BorderThickness = new Thickness(0);
+            }
         }
 
         [STAThread]
@@ -105,7 +117,7 @@ namespace CustomDiscordClient
 
                     if (hasServer)
                     {
-                        Dispatcher.Invoke(()=>openServerViews.Find(x => x.Server.id == serverID).Show());
+                        Dispatcher.Invoke(()=>openServerViews.Find(x => x.Server.id == serverID).Activate());
                     }
                     else
                     {
@@ -119,6 +131,7 @@ namespace CustomDiscordClient
                             openServerViews.Add(view);
                             view.LoadChannel(view.Server.channels.Find(x => x.ID == channelID));
                             view.Show();
+                            view.Activate();
                         });
                     }
                 };

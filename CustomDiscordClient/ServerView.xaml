@@ -1,17 +1,25 @@
 ﻿<Window x:Class="CustomDiscordClient.ServerView"
+        x:Name="ServerViewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomDiscordClient"
         mc:Ignorable="d"
-        Title="ServerView" Height="404.162" Width="678.201">
-    <Grid>
-        <ListBox x:Name="channelsListBox" MouseDoubleClick="channelsListBox_MouseDoubleClick" Margin="5,6,0,6" MaxWidth="121" HorizontalAlignment="Left" Width="121"/>
+        Title="ServerView" Height="477.438" Width="786.97">
+    <Grid x:Name="GridContainer">
+        <ListBox x:Name="channelsListBox" SelectedIndex="{Binding ElementName=ServerViewWindow, Path=ChSelectedIndex}" Margin="5,6,0,6" MaxWidth="121" HorizontalAlignment="Left" Width="121"/>
         <ListBox x:Name="membersListBox" Margin="0,6,1,6" MouseDoubleClick="membersListBox_MouseDoubleClick" MaxWidth="121" Width="121" HorizontalAlignment="Right"/>
         <TextBox x:Name="messageView" HorizontalAlignment="Left" Height="335" Margin="105,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="453" IsEnabled="False" Visibility="Hidden"/>
-        <TextBox x:Name="messageToSend" Height="23" Margin="140,327,193,6" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" KeyDown="messageToSend_KeyDown"/>
-        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,139,6" VerticalAlignment="Bottom" Width="49" Height="23" Click="sendButton_Click"/>
-        <ListBox x:Name="messagesList" Height="Auto" Width="Auto" DockPanel.Dock="Top"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="139,5,139,36"/>
+        <Grid x:Name="AutoSizer" Margin="129,7,127,7">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*">
+                </RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListBox x:Name="messagesList" Width="Auto"  HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="0,0,4,27" Padding="0"/>
+            <TextBox x:Name="messageToSend" Margin="0,0,4,5" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" KeyDown="messageToSend_KeyDown" LostFocus="messageToSend_LostFocus" AcceptsReturn="True" PreviewKeyDown="messageToSend_PreviewKeyDown" PreviewKeyUp="messageToSend_PreviewKeyUp"/>
+
+        </Grid>
     </Grid>
 </Window>
