@@ -1,14 +1,17 @@
-﻿using DiscordSharp;
+﻿using CustomDiscordClient.Internal;
+using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -24,10 +27,15 @@ namespace CustomDiscordClient
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : CustomWindow
     {
-#region Notification stuffs
+        #region Notification stuffs
+#if WIN10NOTIF
         ToastManager toastManager = new ToastManager("DiscordWPF");
+#else
+        NotifyIcon notificationIcon;
+        SoundPlayer notificationSound = new SoundPlayer(CustomDiscordClient.Properties.Resources.notification);
+#endif
 #endregion
 
 
@@ -43,6 +51,16 @@ namespace CustomDiscordClient
         public MainWindow()
         {
             InitializeComponent();
+
+#if WIN10NOTIF
+#else
+            notificationIcon = new NotifyIcon();
+            notificationIcon.Text = "WPF Discord";
+            notificationIcon.Visible = true;
+            notificationIcon.Icon = CustomDiscordClient.Properties.Resources.taskbar;
+            notificationIcon.BalloonTipIcon = ToolTipIcon.None;
+#endif
+
             Icon = new BitmapImage(MagicalDiscordIcon);
             //channelsList.Visibility = Visibility.Hidden;
 
@@ -52,7 +70,7 @@ namespace CustomDiscordClient
             SetupEvents();
 
             Title = "Connecting..";
-            Mouse.OverrideCursor = Cursors.Wait;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
             if(MainClient.SendLoginRequest() != null)
                 discordTask = Task.Run(() => MainClient.Connect());
@@ -64,8 +82,14 @@ namespace CustomDiscordClient
 
         private void SetupTheme()
         {
+            serversListView.BorderThickness = new Thickness(0);
             if (DiscordClientConfig.DarkTheme)
             {
+                Foreground = DiscordClientConfig.DarkThemeForeground;
+                Background = DiscordClientConfig.DarkThemeBackground;
+
+                Console.WriteLine(this.GetWindowButtonStyle());
+
                 serversListView.Foreground = DiscordClientConfig.DarkThemeForeground;
                 serversListView.Background = DiscordClientConfig.DarkThemeBackground;
                 serversListView.BorderThickness = new Thickness(0);
@@ -141,6 +165,41 @@ namespace CustomDiscordClient
                 };
 
                 ToastNotificationManager.CreateToastNotifier(toastManager.GetAppID).Show(toast);
+#else
+                lastNotification = $"{e.Channel.parent.id}:{e.Channel.ID}"; //server:channel
+                notificationIcon.BalloonTipClicked += (sxc, exc) =>
+                {
+                    string[] split = lastNotification.Split(new char[] { ':' }, 2);
+                    lastNotification = null;
+                    string serverID = split[0];
+                    string channelID = split[1];
+                    bool hasServer = false;
+                    foreach (var serverView in openServerViews)
+                        if (serverView.Server.id == serverID)
+                            hasServer = true;
+
+                    if (hasServer)
+                        Dispatcher.Invoke(() => openServerViews.Find(x => x.Server.id == serverID).Activate());
+                    else
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.id == serverID), MainClient);
+                            view.Closed += (x, f) =>
+                            {
+                                openServerViews.Remove(x as ServerView);
+                            };
+                            openServerViews.Add(view);
+                            view.LoadChannel(view.Server.channels.Find(x => x.ID == channelID));
+                            view.Show();
+                            view.Activate();
+                        });
+                    }
+                };
+                notificationIcon.BalloonTipTitle = $"Mentioned received from {e.author.Username}";
+                notificationIcon.BalloonTipText = $"{messageToShow}";
+                notificationIcon.ShowBalloonTip(2500); //2.5 seconds
+                notificationSound.PlaySync();
 #endif
             };
             MainClient.SocketClosed += (sender, e) =>
@@ -228,6 +287,11 @@ namespace CustomDiscordClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             closing = true;
+#if WIN10NOTIF
+#else
+            notificationIcon.Visible = false;
+            notificationIcon.Dispose();
+#endif
             if (Keyboard.IsKeyDown(Key.LeftShift))
                 System.IO.File.Delete("token_cache");
             try

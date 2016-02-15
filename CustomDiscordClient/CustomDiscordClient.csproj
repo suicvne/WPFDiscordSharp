@@ -86,6 +86,8 @@
     <Compile Include="ButteredToast.cs" />
     <Compile Include="DiscordClientConfig.cs" />
     <Compile Include="DiscordDowns.cs" />
+    <Compile Include="DropShadowUtility.cs" />
+    <Compile Include="Internal\CustomWindow.cs" />
     <Compile Include="MessageStub.xaml.cs">
       <DependentUpon>MessageStub.xaml</DependentUpon>
     </Compile>
@@ -97,6 +99,9 @@
     </Compile>
     <Compile Include="ServerView.xaml.cs">
       <DependentUpon>ServerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TestWindow.xaml.cs">
+      <DependentUpon>TestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToastManager.cs" />
     <Compile Include="UserInfo.xaml.cs">
@@ -138,6 +143,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ServerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,6 +197,12 @@
       <Project>{a96ffe9e-3650-4976-872e-5bb336cc1589}</Project>
       <Name>DiscordSharp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="taskbar.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="notification.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

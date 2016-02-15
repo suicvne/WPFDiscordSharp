@@ -70,7 +70,7 @@ namespace CustomDiscordClient
                 else
                     userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
 
-            
+            //parsing
             {
                 richTextBox.Document.Blocks.Clear();
                 DiscordChannel channel = Message.Channel() as DiscordChannel;
@@ -81,6 +81,17 @@ namespace CustomDiscordClient
                 if (Message.content.Trim() == "" && Message.attachments.Length > 0)
                     message.Text = "Attachment posted. Coming soon!";
             }
+
+            ToolTip = $"Sent at {Message.timestamp}";
+        }
+
+        public void AppendMessage(DiscordMessage message)
+        {
+            DiscordChannel channel = message.Channel() as DiscordChannel;
+            var markdownParser = new Markdown(channel.parent, null);
+            var blocks = markdownParser.Transform(message.content, $"{message.id};{channel.ID}");
+            richTextBox.Document.Blocks.AddRange(blocks);
+            ToolTip = $"Sent at {message.timestamp}";
         }
 
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)

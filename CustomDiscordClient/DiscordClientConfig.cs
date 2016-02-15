@@ -16,6 +16,7 @@ namespace CustomDiscordClient
         /// #282b30
         /// </summary>
 
+        public static bool UseCustomWindow = true;
         public static bool DarkTheme = true;
 
         public static Color ColorDarkBackground = new Color { R = 16, G = 17, B = 19, A = 255 };

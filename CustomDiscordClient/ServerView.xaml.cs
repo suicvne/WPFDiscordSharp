@@ -1,4 +1,5 @@
-﻿using DiscordSharp;
+﻿using CustomDiscordClient.Internal;
+using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
@@ -16,43 +17,13 @@ using System.Windows.Shapes;
 
 namespace CustomDiscordClient
 {
-    public static class Exetn
-    {
-        public static IEnumerable<Visual> GetChildren(this DependencyObject parent, bool recurse = true)
-        {
-            if (parent != null)
-            {
-                int count = VisualTreeHelper.GetChildrenCount(parent);
-                for (int i = 0; i < count; i++)
-                {
-                    // Retrieve child visual at specified index value.
-                    var child = VisualTreeHelper.GetChild(parent, i) as Visual;
-
-                    if (child != null)
-                    {
-                        yield return child;
-
-                        if (recurse)
-                        {
-                            foreach (var grandChild in child.GetChildren(true))
-                            {
-                                yield return grandChild;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
     /// <summary>
     /// Interaction logic for ServerView.xaml
     /// </summary>
-    public partial class ServerView : Window
+    public partial class ServerView : CustomWindow
     {
         //TODO: make side lists collapseable
-        public DiscordServer Server {
-            get; internal set;
-        }
+        public DiscordServer Server {get; internal set;}
         public DiscordClient mainClientReference { get; internal set; }
         private List<DiscordMessage> messageHistoryCache = new List<DiscordMessage>();
         private DiscordChannel currentChannel;
@@ -146,8 +117,9 @@ namespace CustomDiscordClient
                             messageHistory.ForEach(m => messageHistoryCache.Add(m));
                         }
                     }
-                    messagesList.SelectedIndex = messagesList.Items.Count - 1;
-                    messagesList.ScrollIntoView(messagesList.SelectedItem);
+                    //messagesList.SelectedIndex = messagesList.Items.Count - 1;
+                    //messagesList.ScrollIntoView(messagesList.SelectedItem);
+                    
                 });
             });
 
@@ -204,17 +176,35 @@ namespace CustomDiscordClient
 
         private void AppendMessage(DiscordMessage m)
         {
-            MessageStub stub = new MessageStub(m);
-            messagesList.Items.Add(stub);
-            messagesList.ScrollIntoView(messagesList.Items[messagesList.Items.Count - 1]);
-            //string author = "<Removed User>";
-            //if (m.author != null)
-            //    author = m.author.Username;
-
-            //if (m.content.Trim() == "" && m.attachments != null)
-            //    messageView.Text += $"<{author}> Posted an attachment. Coming soon!" + Environment.NewLine;
-            //else
-            //    messageView.Text += $"<{author}> {m.content}" + Environment.NewLine;
+            if(messagesList.Items.Count > 0)
+            {
+                var previousStub = (messagesList.Items[messagesList.Items.Count - 1] as MessageStub);
+                if ((previousStub.Message.timestamp - m.timestamp) < TimeSpan.FromMinutes(2))
+                {
+                    if (m.author == (messagesList.Items[messagesList.Items.Count - 1] as MessageStub).Message.author)
+                    {
+                        (messagesList.Items[messagesList.Items.Count - 1] as MessageStub).AppendMessage(m);
+                    }
+                    else
+                    {
+                        MessageStub stub = new MessageStub(m);
+                        messagesList.Items.Add(stub);
+                        MainScroller.ScrollToBottom();
+                    }
+                }
+                else
+                {
+                    MessageStub stub = new MessageStub(m);
+                    messagesList.Items.Add(stub);
+                    MainScroller.ScrollToBottom();
+                }
+            }
+            else
+            {
+                MessageStub stub = new MessageStub(m);
+                messagesList.Items.Add(stub);
+                MainScroller.ScrollToBottom();
+            }
         }
 
         public void LoadChannel(DiscordChannel channel)
@@ -228,8 +218,7 @@ namespace CustomDiscordClient
                     Title = $"Discord - {Server.name} - #{channel.Name}";
                 }
             }
-            messagesList.SelectedIndex = messagesList.Items.Count - 1;
-            messagesList.ScrollIntoView(messagesList.SelectedItem);
+            MainScroller.ScrollToBottom();
         }
 
         public void UpdateServer(DiscordServer server)
@@ -247,8 +236,7 @@ namespace CustomDiscordClient
             if (currentChannel != null && !string.IsNullOrEmpty(message))
             {
                 currentChannel.SendMessage(message);
-                messagesList.SelectedIndex = messagesList.Items.Count - 1;
-                messagesList.ScrollIntoView(messagesList.SelectedItem);
+                MainScroller.ScrollToBottom();
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using DiscordSharp;
+﻿using CustomDiscordClient.Internal;
+using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace CustomDiscordClient
     /// <summary>
     /// Interaction logic for UserInfo.xaml
     /// </summary>
-    public partial class UserInfo : Window
+    public partial class UserInfo : CustomWindow
     {
         public DiscordMember Member { get; internal set; }
         public DiscordClient mainClientReference { get; internal set; }
