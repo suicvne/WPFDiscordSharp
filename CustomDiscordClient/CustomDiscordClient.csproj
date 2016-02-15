@@ -44,9 +44,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Markdown.Xaml">
-      <HintPath>..\..\..\..\Desktop\Markdown.XAML-master\build\Markdown.Xaml\Debug\Markdown.Xaml.dll</HintPath>
-    </Reference>
     <Reference Include="NAudio">
       <HintPath>.\NAudio.dll</HintPath>
     </Reference>
@@ -81,23 +78,6 @@
     <Reference Include="WebSocket4Net">
       <HintPath>.\WebSocket4Net.dll</HintPath>
     </Reference>
-    <Reference Include="Windows.ApplicationModel" />
-    <Reference Include="Windows.Data" />
-    <Reference Include="Windows.Devices" />
-    <Reference Include="Windows.Foundation" />
-    <Reference Include="Windows.Gaming" />
-    <Reference Include="Windows.Globalization" />
-    <Reference Include="Windows.Graphics" />
-    <Reference Include="Windows.Management" />
-    <Reference Include="Windows.Media" />
-    <Reference Include="Windows.Networking" />
-    <Reference Include="Windows.Security" />
-    <Reference Include="Windows.Services" />
-    <Reference Include="Windows.Storage" />
-    <Reference Include="Windows.System" />
-    <Reference Include="Windows.UI" />
-    <Reference Include="Windows.UI.Xaml" />
-    <Reference Include="Windows.Web" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

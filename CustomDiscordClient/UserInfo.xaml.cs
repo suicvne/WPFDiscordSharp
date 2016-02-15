@@ -27,11 +27,29 @@ namespace CustomDiscordClient
         public UserInfo()
         {
             InitializeComponent();
+            SetupTheme();
+        }
+
+        private void SetupTheme()
+        {
+            if(DiscordClientConfig.DarkTheme)
+            {
+                this.Foreground = DiscordClientConfig.DarkThemeForeground;
+                this.Background = DiscordClientConfig.DarkThemeBackground;
+
+                usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+                userID.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                inServers.Foreground = DiscordClientConfig.DarkThemeForeground;
+                inServers.Background = DiscordClientConfig.DarkThemeBackground;
+                inServers.BorderThickness = new Thickness(0);
+            }
         }
 
         public UserInfo(DiscordMember member, DiscordClient client)
         {
             InitializeComponent();
+            SetupTheme();
 
             Member = member;
             mainClientReference = client;
@@ -64,6 +82,7 @@ namespace CustomDiscordClient
                     }
                 }
             }
+            
         }
     }
 }

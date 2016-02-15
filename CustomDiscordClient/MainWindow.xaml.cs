@@ -14,8 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+#if WIN10NOTIF
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+#endif
 
 namespace CustomDiscordClient
 {
@@ -24,14 +26,15 @@ namespace CustomDiscordClient
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region Notification stuffs
+#region Notification stuffs
         ToastManager toastManager = new ToastManager("DiscordWPF");
-        #endregion
+#endregion
 
 
         private List<ServerView> openServerViews;
         DiscordClient MainClient;
         Task discordTask;
+        bool closing = false;
 
         Uri MagicalDiscordIcon = new Uri("https://pbs.twimg.com/media/CSA9MacUcAAdY8h.png");
 
@@ -102,6 +105,7 @@ namespace CustomDiscordClient
                 string messageToShow = e.message.content;
                 string idToReplace = $"<@{MainClient.Me.ID}>";
                 messageToShow = messageToShow.Replace(idToReplace, $"@{MainClient.Me.Username}");
+#if WIN10NOTIF
                 var toast = toastManager.CreateToast(System.IO.Path.GetFullPath("temp.png"), $"Mention received from {e.author.Username}", $"{messageToShow}", "");
                 lastNotification = $"{e.Channel.parent.id}:{e.Channel.ID}"; //server:channel
                 toast.Activated += (sxc, exc) =>
@@ -137,9 +141,12 @@ namespace CustomDiscordClient
                 };
 
                 ToastNotificationManager.CreateToastNotifier(toastManager.GetAppID).Show(toast);
+#endif
             };
             MainClient.SocketClosed += (sender, e) =>
             {
+                if (closing)
+                    return;
                 Dispatcher.Invoke(() => Title = "Connection lost, retrying..");
                 discordTask.Dispose();
                 Task.Delay(3000).Wait();
@@ -216,6 +223,20 @@ namespace CustomDiscordClient
             {
                 //channelsList.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            closing = true;
+            if (Keyboard.IsKeyDown(Key.LeftShift))
+                System.IO.File.Delete("token_cache");
+            try
+            {
+                openServerViews.ForEach(x => x.Close());
+            }
+            catch { }
+            MainClient.Logout();
+            MainClient.Dispose();
         }
     }
 }

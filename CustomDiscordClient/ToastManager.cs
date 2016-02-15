@@ -5,8 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+#if WIN10NOTIF
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+#endif
 
 namespace CustomDiscordClient
 {
@@ -18,7 +20,7 @@ namespace CustomDiscordClient
         {
             APP_ID = appid;
         }
-
+#if WIN10NOTIF
         public ToastNotification CreateToast(string title)
         {
             XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);
@@ -62,6 +64,6 @@ namespace CustomDiscordClient
             imageElemtns[0].Attributes.GetNamedItem("src").NodeValue = ImagePath;
             return new ToastNotification(toastXml);
         }
-
+#endif
     }
 }

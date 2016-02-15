@@ -83,6 +83,7 @@ namespace CustomDiscordClient
 
         private void SetTheme()
         {
+            messageToSend.AcceptsReturn = false;
             if (DiscordClientConfig.DarkTheme)
             {
                 this.Background = DiscordClientConfig.DarkThemeBackground;
@@ -99,6 +100,7 @@ namespace CustomDiscordClient
 
                 messageToSend.Background = messagesList.Background;
                 messageToSend.Foreground = messagesList.Foreground;
+                messageToSend.BorderThickness = new Thickness(0, 0, 0, 1);
 
                 foreach(var element in this.GridContainer.Children)
                 {
@@ -256,8 +258,20 @@ namespace CustomDiscordClient
             messageToSend.Clear();
         }
 
+        bool simulatedTyping = false;
         private void messageToSend_KeyDown(object sender, KeyEventArgs e)
         {
+            if (!simulatedTyping)
+            {
+                mainClientReference.SimulateTyping(currentChannel);
+                simulatedTyping = true;
+                Task.Run(() =>
+                {
+                    Task.Delay(10 * 1000).Wait();
+                    simulatedTyping = false;
+                });
+            }
+
             if((Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
             {}
             else if (Keyboard.IsKeyDown(Key.Enter))
@@ -265,6 +279,7 @@ namespace CustomDiscordClient
                 //messageToSend.Text += Environment.NewLine;
                 SendMessage(messageToSend.Text);
                 messageToSend.Clear();
+                simulatedTyping = false;
             }
         }
 

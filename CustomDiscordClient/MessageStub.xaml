@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              xmlns:discord="clr-namespace:DiscordSharp.Objects;assembly=DiscordSharp"
              mc:Ignorable="d" MinHeight="71">
     <UserControl.Resources>
@@ -12,19 +11,14 @@
             <Setter Property="FontFamily"
                     Value="Consolas"></Setter>
         </Style>
-        <local:Markdown x:Key="Markdown"
-                        CodeStyle="{StaticResource ResourceKey=MDCodeStyle}">
-            
-        </local:Markdown>
-        <local:TextToFlowDocumentConverter x:Key="TextToFlowConverter" Markdown="{StaticResource Markdown}" ></local:TextToFlowDocumentConverter>
     </UserControl.Resources>
     
     <Grid>
-        <Image x:Name="userAvatar" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" VerticalAlignment="Top" Width="40" MaxWidth="40" MaxHeight="40"/>
+        <Image x:Name="userAvatar" HorizontalAlignment="Left" Height="40" Margin="6,10,0,0" VerticalAlignment="Top" Width="40" MaxWidth="40" MaxHeight="40"/>
         <Label x:Name="usernameLabel" Content="Label" HorizontalAlignment="Left" Margin="50,10,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="SemiBold"/>
         
         <TextBlock x:Name="message" Visibility="Hidden" TextWrapping="WrapWithOverflow" Text="This is a test of a really extremely long message " HorizontalAlignment="Left" Margin="58,35,0,0" VerticalAlignment="Top" ScrollViewer.CanContentScroll="True"/>
-        <RichTextBox x:Name="richTextBox" Margin="58,35,0,0" TextChanged="richTextBox_TextChanged" IsReadOnly="True" BorderThickness="0" Background="{x:Null}">
+        <RichTextBox x:Name="richTextBox" Margin="52,35,0,0" TextChanged="richTextBox_TextChanged" IsReadOnly="True" BorderThickness="0" Background="{x:Null}">
             <FlowDocument AllowDrop="False" IsEnabled="False" PageWidth="{Binding ElementName=richTextBox, Path=ActualWidth}">
                 <Paragraph>
                     <Run Text="fuck you wpf"/>

@@ -24,6 +24,33 @@ namespace CustomDiscordClient
         public LoginForm()
         {
             InitializeComponent();
+            SetupTheme();
+        }
+
+        private void SetupTheme()
+        {
+            if(DiscordClientConfig.DarkTheme)
+            {
+                this.Background = DiscordClientConfig.DarkThemeBackground;
+                this.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                label.Foreground = DiscordClientConfig.DarkThemeForeground;
+                label1.Foreground = DiscordClientConfig.DarkThemeForeground;
+
+                emailTextBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+                emailTextBox.Background = DiscordClientConfig.DarkThemeBackground;
+                emailTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                passwordTextBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+                passwordTextBox.Background = DiscordClientConfig.DarkThemeBackground;
+                passwordTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
+
+                loginButton.Foreground = DiscordClientConfig.DarkThemeForeground;
+                loginButton.Background = DiscordClientConfig.DarkThemeBackground;
+
+                cancelButton.Foreground = DiscordClientConfig.DarkThemeForeground;
+                cancelButton.Background = DiscordClientConfig.DarkThemeBackground;
+            }
         }
 
         private void SetMainControls(bool enabled)

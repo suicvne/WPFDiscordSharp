@@ -1,5 +1,4 @@
 ﻿using DiscordSharp.Objects;
-using Markdown.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -61,7 +60,8 @@ namespace CustomDiscordClient
                         usernameLabel.Foreground = new SolidColorBrush(roleColour);
                     }
                     else
-                        usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+                        if(DiscordClientConfig.DarkTheme)
+                            usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
                 });
             }
             if(Message.author != null)

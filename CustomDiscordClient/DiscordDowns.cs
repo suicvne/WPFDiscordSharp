@@ -763,7 +763,7 @@ namespace CustomDiscordClient
             result.FontFamily = new FontFamily("Source Code Pro");
             result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 200, G = 200, B = 200, A = 255 });
             if (DiscordClientConfig.DarkTheme)
-                result.Foreground = DiscordClientConfig.DarkThemeForeground;
+                result.Foreground = DiscordClientConfig.DarkThemeBackground;
             //result.MouseEnter += (sender, e) =>
             //{
             //    result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 0 });
@@ -924,7 +924,7 @@ namespace CustomDiscordClient
                     roleColour = DiscordClientConfig.ColorDarkForeground;
                 u.Roles.ForEach(x =>
                 {
-                    if(x.position > -1)
+                    if(x.position > -1 && x.name != "@everyone")
                     {
                         roleColour.A = 255;
                         roleColour.R = (byte)x.color.R;

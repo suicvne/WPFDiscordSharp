@@ -10,13 +10,8 @@
         <Image x:Name="userAvatar" HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="100" Margin="0,23,0,0"/>
         <Label x:Name="userID" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,176,0,0"/>
         <Label x:Name="usernameLabel" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,144,0,0" FontSize="18.667"/>
-        <ListView x:Name="inServers" HorizontalAlignment="Left" Height="143" VerticalAlignment="Top" Width="352" Margin="0,236,0,0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ListBox x:Name="inServers" HorizontalAlignment="Left" Height="143" VerticalAlignment="Top" Width="352" Margin="0,236,0,0">
+        </ListBox>
 
     </Grid>
 </Window>
