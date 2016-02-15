@@ -854,7 +854,7 @@ namespace CustomDiscordClient
             }
         }
         public DiscordClient DiscordClient { get; internal set; }
-        private static readonly Regex _username = new Regex(@"<@([0-9\(\)](\d{16}|\d{17}))>", RegexOptions.Compiled);
+        public static readonly Regex _username = new Regex(@"<@([0-9\(\)](\d{16}|\d{17}))>", RegexOptions.Compiled);
 
         private IEnumerable<Inline> DoUsernameSpans(string text, Func<string, IEnumerable<Inline>> defaultHandler)
         {

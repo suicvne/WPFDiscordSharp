@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,8 @@ namespace CustomDiscordClient
     public partial class MessageStub : UserControl
     {
         public DiscordMessage Message { get; internal set; }
+        public List<DiscordMessage> Messages { get; internal set; } = new List<DiscordMessage>();
+        public List<string> MessageIDs { get; internal set; } = new List<string>();
 
         public MessageStub()
         {
@@ -34,7 +37,18 @@ namespace CustomDiscordClient
             InitializeComponent();
             Message = message;
             RefreshContent();
+#if DEBUG
+            richTextBox.MouseDoubleClick += RichTextBox_MouseDoubleClick;
+#endif
         }
+
+#if DEBUG
+        private void RichTextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            string richText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            Console.WriteLine(richText);
+        }
+#endif
 
         private void SetTheme()
         {
@@ -43,6 +57,9 @@ namespace CustomDiscordClient
 
         public void RefreshContent()
         {
+            MessageIDs = new List<string>();
+            Messages = new List<DiscordMessage>();
+
             if (Message.author == null)
                 usernameLabel.Content = "Removed User.";
             else
@@ -83,6 +100,9 @@ namespace CustomDiscordClient
             }
 
             ToolTip = $"Sent at {Message.timestamp}";
+
+            MessageIDs.Add(Message.id);
+            Messages.Add(Message);
         }
 
         public void AppendMessage(DiscordMessage message)
@@ -92,11 +112,52 @@ namespace CustomDiscordClient
             var blocks = markdownParser.Transform(message.content, $"{message.id};{channel.ID}");
             richTextBox.Document.Blocks.AddRange(blocks);
             ToolTip = $"Sent at {message.timestamp}";
+            MessageIDs.Add(message.id);
+            Messages.Add(message);
+        }
+
+        public void RemoveMessage(DiscordMessage message)
+        {
+            MessageIDs.Remove(message.id);
+            string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text.Replace(message.content, "");
+        }
+
+        public void RemoveMessage(string id)
+        {
+            var message = Messages.Find(x => x.id == id);
+            MessageIDs.Remove(id);
+            string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
+            Dispatcher.Invoke(() =>
+            {
+                    foreach (var block in richTextBox.Document.Blocks)
+                    {
+                        if ((new TextRange(block.ContentStart, block.ContentEnd).Text.Contains(NoMarkdown(message))))
+                        {
+                            richTextBox.Document.Blocks.Remove(block);
+                            break;
+                        }
+                    }
+            });
+            Messages.Remove(message);
+        }
+
+        private string NoMarkdown(DiscordMessage message)
+        {
+            string returnValue = message.content;
+            returnValue = returnValue.Trim(new char[] { '`', '*' });
+            returnValue = returnValue.Replace("```", "");
+            foreach(Match match in Markdown._username.Matches(returnValue))
+            {
+                string ID = match.Value.Trim(new char[] { '<', '@', '>' });
+                DiscordMember user = (Message.Channel() as DiscordChannel).parent.members.Find(x => x.ID == ID);
+                returnValue = match.Result($"@{user.Username}");
+                Markdown._username.Replace(returnValue, ID);
+            }
+
+            return returnValue;
         }
 
         private void richTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
+        {}
     }
 }

@@ -116,6 +116,25 @@ namespace CustomDiscordClient
                 //    MessageBox.Show("Critical DiscordSharp Error Ocurred: " + e.message.Message);
                 //}
             };
+            MainClient.MessageDeleted += (sender, e) =>
+            {
+                if(e.DeletedMessage != null)
+                {
+                    var serverView = openServerViews.Find(x => x.Server.id == e.Channel.parent.id);
+                    if(serverView != null)
+                    {
+                        serverView.RemoveMessage(e.DeletedMessage);
+                    }
+                }
+                else
+                {
+                    var serverView = openServerViews.Find(x => x.Server.id == e.Channel.parent.id);
+                    if (serverView != null)
+                    {
+                        serverView.RemoveMessage(e.RawJson["d"]["id"].ToString(), e.RawJson["d"]["channel_id"].ToString());
+                    }
+                }
+            };
             MainClient.MentionReceived += (sender, e) =>
             {
                 string toReplace = $"<@{MainClient.Me.ID}>";

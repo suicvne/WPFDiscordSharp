@@ -3,6 +3,8 @@ using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -207,6 +209,39 @@ namespace CustomDiscordClient
             }
         }
 
+        public void RemoveMessage(DiscordMessage m)
+        {
+            RemoveMessage(m.id, (m.Channel() as DiscordChannel).ID);
+        }
+
+        public void RemoveMessage(string id, string channel_id)
+        {
+            if (messagesList.Items.Count > 0)
+            {
+                if (channel_id == currentChannel.ID)
+                {
+                    foreach (MessageStub stubby in messagesList.Items)
+                    {
+                        if(stubby.MessageIDs.Count == 1)
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                messagesList.Items.Remove(stubby);
+                                messagesList.Items.Refresh();
+                            });
+                            break;
+                        }
+                        else if (stubby.MessageIDs.Contains(id))
+                        {
+                            stubby.RemoveMessage(id);
+                        }
+                    }
+                }
+            }
+            messageHistoryCache.Remove(messageHistoryCache.Find(x => x.id == id));
+            //TODO: find a better way to do this :(((
+        }
+
         public void LoadChannel(DiscordChannel channel)
         {
             messagesList.Items.Clear();
@@ -302,6 +337,26 @@ namespace CustomDiscordClient
                     messageToSend.Text += Environment.NewLine;
                     messageToSend.CaretIndex = messageToSend.Text.Length - 1;
                     e.Handled = true;
+                }
+            }
+            if((ModifierKeys.Control & Keyboard.Modifiers) == ModifierKeys.Control)
+            {
+                if(Keyboard.IsKeyDown(Key.V)) //override pasting
+                {
+                    if(Clipboard.ContainsImage()) //upload image, yay
+                    {
+                        var image = Clipboard.GetImage();
+                        using (var fileStream = new FileStream("unknown.png", FileMode.Create))
+                        {
+                            BitmapEncoder encoder = new PngBitmapEncoder();
+                            encoder.Frames.Add(BitmapFrame.Create(image));
+                            encoder.Save(fileStream);
+                        }
+
+                        mainClientReference.AttachFile(currentChannel, "", "unknown.png");
+
+                        File.Delete("unknown.png");
+                    }
                 }
             }
         }
