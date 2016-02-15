@@ -47,7 +47,6 @@ namespace CustomDiscordClient.Internal
 
         public Style GetWindowButtonStyle()
         {
-
             return Resources["WindowButtonStyle"] as Style;
         }
 
