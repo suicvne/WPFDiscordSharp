@@ -75,11 +75,11 @@
                                            Grid.Row="0" Grid.Column="0"/>
                                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                     <Button x:Name="settingsButton" Style="{StaticResource WindowButtonStyle}"
-                                            Content="i" Visibility="Hidden"/>
+                                            Content="i" Visibility="{TemplateBinding ShowSettingsButton}"/>
                                     <Button x:Name="minimizeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="restoreButton" Style="{StaticResource WindowButtonStyle}"
-                                            Content="1" IsEnabled="{Binding MaximizeButtonEnabled}"/>
+                                            Content="1"/>
                                     <Button x:Name="closeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="r" />
                                 </StackPanel>

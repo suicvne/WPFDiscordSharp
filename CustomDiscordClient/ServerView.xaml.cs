@@ -57,6 +57,7 @@ namespace CustomDiscordClient
 
         private void SetTheme()
         {
+            this.ShowSettingsButton = Visibility.Hidden;
             messageToSend.AcceptsReturn = false;
             if (DiscordClientConfig.DarkTheme)
             {
