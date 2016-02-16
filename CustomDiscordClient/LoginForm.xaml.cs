@@ -113,5 +113,13 @@ namespace CustomDiscordClient
         {
             this.Close();
         }
+
+        private void passwordTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                loginButton_Click(this, new RoutedEventArgs());
+            }
+        }
     }
 }

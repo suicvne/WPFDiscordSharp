@@ -13,7 +13,7 @@
         <Label x:Name="label" Content="Email" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,13,0,0" Width="85" Height="26"/>
         <Label x:Name="label1" Content="Password&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,39,0,0" Width="85" Height="32"/>
         <TextBox x:Name="emailTextBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="270" Margin="100,14,0,0"/>
-        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="100,42,0,0" VerticalAlignment="Top" Width="270"/>
+        <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="100,42,0,0" VerticalAlignment="Top" Width="270" KeyDown="passwordTextBox_KeyDown"/>
 
     </Grid>
 </control:CustomWindow>
