@@ -1,11 +1,12 @@
-﻿<Window x:Class="CustomDiscordClient.LoginForm"
+﻿<control:CustomWindow x:Class="CustomDiscordClient.LoginForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomDiscordClient"
+        xmlns:control="clr-namespace:CustomDiscordClient.Internal"
         mc:Ignorable="d"
-        Title="Login to Discord" Height="144.803" Width="387.991" ResizeMode="NoResize">
+        Title="Login to Discord" Height="144.803" Width="387.991" ResizeMode="NoResize" AllowResizing="False" ShowSettingsButton="Hidden" ShowMaximizeButton="Hidden" EnableMaximizeButton="False">
     <Grid>
         <Button x:Name="cancelButton" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="295,81,0,0" IsCancel="True" Click="cancelButton_Click"/>
         <Button x:Name="loginButton" Content="Login" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="215,81,0,0" Click="loginButton_Click"/>
@@ -15,4 +16,4 @@
         <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="100,42,0,0" VerticalAlignment="Top" Width="270"/>
 
     </Grid>
-</Window>
+</control:CustomWindow>

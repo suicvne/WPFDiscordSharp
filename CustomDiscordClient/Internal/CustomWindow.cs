@@ -49,25 +49,37 @@ namespace CustomDiscordClient.Internal
             }
         }
 
-        public static readonly DependencyProperty MaximizeEnabled = DependencyProperty.Register("MaximizeButtonEnabled", typeof(bool), typeof(CustomWindow));
-        public bool MaximizeButtonEnabled { get { return (bool)GetValue(MaximizeEnabled); } set { SetValue(MaximizeEnabled, value); } }
+        public static readonly DependencyProperty EnableMaximizeButtonProperty =
+            DependencyProperty.Register("EnableMaximizeButton", typeof(bool), typeof(CustomWindow));
+        public bool EnableMaximizeButton
+        {
+            get
+            {
+                return (bool)GetValue(EnableMaximizeButtonProperty);
+            }
+            set
+            {
+                SetValue(EnableMaximizeButtonProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ShowMaximizeButtonProperty =
+            DependencyProperty.Register("ShowMaximizeButton", typeof(Visibility), typeof(CustomWindow));
+        public Visibility ShowMaximizeButton
+        {
+            get
+            {
+                return (Visibility)GetValue(ShowMaximizeButtonProperty);
+            }
+            set
+            {
+                SetValue(ShowMaximizeButtonProperty, value);
+            }
+        }
 
         public static readonly DependencyProperty AllowResize = DependencyProperty.Register("AllowResizing", typeof(bool), typeof(CustomWindow));
         public bool AllowResizing { get { return (bool)GetValue(AllowResize); } set { SetValue(AllowResize, value); } }
-
-        public void SetMaximizeEnabled(bool enabled)
-        {
-            Button restoreButton = GetTemplateChild("restoreButton") as Button;
-            if(restoreButton != null)
-                restoreButton.IsEnabled = enabled;
-        }
-
-        public void SetSettingsButtonHidden(bool hidden)
-        {
-            Button restoreButton = GetTemplateChild("settingsButton") as Button;
-            if(restoreButton != null)
-                restoreButton.Visibility = (hidden) ? Visibility.Hidden : Visibility.Visible;
-        }
+        
 
         static CustomWindow()
         {
@@ -100,10 +112,6 @@ namespace CustomDiscordClient.Internal
             Button restoreButton = GetTemplateChild("restoreButton") as Button;
             if (restoreButton != null)
                 restoreButton.Click += RestoreClick;
-            if (MaximizeButtonEnabled)
-                restoreButton.IsEnabled = false;
-            else
-                restoreButton.IsEnabled = true;
 
             Button closeButton = GetTemplateChild("closeButton") as Button;
             if (closeButton != null)

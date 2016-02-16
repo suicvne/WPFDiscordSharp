@@ -46,7 +46,6 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Silver"/>
         <Setter Property="Title" Value="Test"/>
-        <Setter Property="MaximizeButtonEnabled" Value="False"/>
         <Setter Property="AllowResizing" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>

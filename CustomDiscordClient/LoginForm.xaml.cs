@@ -1,4 +1,5 @@
-﻿using DiscordSharp;
+﻿using CustomDiscordClient.Internal;
+using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace CustomDiscordClient
     /// <summary>
     /// Interaction logic for LoginForm.xaml
     /// </summary>
-    public partial class LoginForm : Window
+    public partial class LoginForm : CustomWindow
     {
         public LoginForm()
         {

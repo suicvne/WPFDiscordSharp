@@ -46,7 +46,6 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Silver"/>
         <Setter Property="Title" Value="Test"/>
-        <Setter Property="MaximizeButtonEnabled" Value="False"/>
         <Setter Property="AllowResizing" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -79,7 +78,8 @@
                                     <Button x:Name="minimizeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="restoreButton" Style="{StaticResource WindowButtonStyle}"
-                                            Content="1"/>
+                                            Content="1" Visibility="{TemplateBinding ShowMaximizeButton}" IsEnabled="{TemplateBinding EnableMaximizeButton}"/>
+                                    
                                     <Button x:Name="closeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="r" />
                                 </StackPanel>

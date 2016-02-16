@@ -33,9 +33,6 @@ namespace CustomDiscordClient
 
         private void SetupTheme()
         {
-            this.SetMaximizeEnabled(false);
-            this.SetSettingsButtonHidden(true);
-
             if(DiscordClientConfig.DarkTheme)
             {
                 this.Foreground = DiscordClientConfig.DarkThemeForeground;
