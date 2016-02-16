@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:CustomDiscordClient"
         xmlns:control="clr-namespace:CustomDiscordClient.Internal"
         mc:Ignorable="d"
-        Title="ServerView" Height="477.438" Width="786.97">
+        Title="ServerView" Height="477.438" Width="786.97" Style="{DynamicResource ShowWithoutSettings}">
     <Grid x:Name="GridContainer">
         <ListBox x:Name="channelsListBox" SelectedIndex="{Binding ElementName=ServerViewWindow, Path=ChSelectedIndex}" Margin="5,6,0,6" MaxWidth="121" HorizontalAlignment="Left" Width="121"/>
         <ListBox x:Name="membersListBox" Margin="0,6,1,6" MouseDoubleClick="membersListBox_MouseDoubleClick" MaxWidth="121" Width="121" HorizontalAlignment="Right"/>

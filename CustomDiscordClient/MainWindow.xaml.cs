@@ -3,20 +3,13 @@ using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Media;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 #if WIN10NOTIF
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
@@ -51,7 +44,6 @@ namespace CustomDiscordClient
         public MainWindow()
         {
             InitializeComponent();
-
 #if WIN10NOTIF
 #else
             notificationIcon = new NotifyIcon();
@@ -77,7 +69,14 @@ namespace CustomDiscordClient
 
             openServerViews = new List<ServerView>();
 
+            SettingsGearClicked += MainWindow_SettingsGearClicked;
+
             SetupTheme();
+        }
+
+        private void MainWindow_SettingsGearClicked(object sender, EventArgs e)
+        {
+            System.Windows.MessageBox.Show("Works!");
         }
 
         private void SetupTheme()
@@ -249,10 +248,11 @@ namespace CustomDiscordClient
             Dispatcher.Invoke(() =>
             {
                 serversListView.Items.Clear();
-                foreach (var server in MainClient.GetServersList())
+                List<DiscordServer> tempCopy = MainClient.GetServersList();
+                tempCopy.Sort((s1, s2) => s1.name.CompareTo(s2.name));
+                foreach (var server in tempCopy)
                 {
                     ServerStub stub = new ServerStub(server);
-                    //serversListView.Items.Add(server.name);
                     
                     serversListView.Items.Add(stub);
                 }

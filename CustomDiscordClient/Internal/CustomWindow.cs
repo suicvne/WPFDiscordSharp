@@ -14,6 +14,8 @@ namespace CustomDiscordClient.Internal
 {
     public class CustomWindow : Window
     {
+        public event EventHandler<EventArgs> SettingsGearClicked;
+
         #region Click Events
         protected void MinimizeClick(object sender, RoutedEventArgs e)
         {
@@ -22,12 +24,51 @@ namespace CustomDiscordClient.Internal
         protected void RestoreClick(object sender, RoutedEventArgs e)
         {
             WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            Button restoreButton = GetTemplateChild("restoreButton") as Button;
+            if (WindowState == WindowState.Maximized)
+                restoreButton.Content = "2";
+            else
+                restoreButton.Content = "1";
         }
         protected void CloseClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
         #endregion
+
+        public static readonly DependencyProperty ShowSettingsButtonProperty = DependencyProperty.Register("ShowSettingsButton", typeof(Visibility), typeof(CustomWindow));
+        public Visibility ShowSettingsButton
+        {
+            get
+            {
+                return (Visibility)GetValue(ShowSettingsButtonProperty);
+            }
+            set
+            {
+                SetValue(ShowSettingsButtonProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty MaximizeEnabled = DependencyProperty.Register("MaximizeButtonEnabled", typeof(bool), typeof(CustomWindow));
+        public bool MaximizeButtonEnabled { get { return (bool)GetValue(MaximizeEnabled); } set { SetValue(MaximizeEnabled, value); } }
+
+        public static readonly DependencyProperty AllowResize = DependencyProperty.Register("AllowResizing", typeof(bool), typeof(CustomWindow));
+        public bool AllowResizing { get { return (bool)GetValue(AllowResize); } set { SetValue(AllowResize, value); } }
+
+        public void SetMaximizeEnabled(bool enabled)
+        {
+            Button restoreButton = GetTemplateChild("restoreButton") as Button;
+            if(restoreButton != null)
+                restoreButton.IsEnabled = enabled;
+        }
+
+        public void SetSettingsButtonHidden(bool hidden)
+        {
+            Button restoreButton = GetTemplateChild("settingsButton") as Button;
+            if(restoreButton != null)
+                restoreButton.Visibility = (hidden) ? Visibility.Hidden : Visibility.Visible;
+        }
+
         static CustomWindow()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomWindow),
@@ -59,10 +100,26 @@ namespace CustomDiscordClient.Internal
             Button restoreButton = GetTemplateChild("restoreButton") as Button;
             if (restoreButton != null)
                 restoreButton.Click += RestoreClick;
+            if (MaximizeButtonEnabled)
+                restoreButton.IsEnabled = false;
+            else
+                restoreButton.IsEnabled = true;
 
             Button closeButton = GetTemplateChild("closeButton") as Button;
             if (closeButton != null)
                 closeButton.Click += CloseClick;
+
+            Button settingsButton = GetTemplateChild("settingsButton") as Button;
+            if (settingsButton != null)
+            {
+                settingsButton.Click += (s, e) =>
+                {
+                    if (SettingsGearClicked != null)
+                        SettingsGearClicked(this, new EventArgs());
+                };
+            }
+            settingsButton.Visibility = ShowSettingsButton;
+
 
             Rectangle moveRectangle = GetTemplateChild("moveRectangle") as Rectangle;
             moveRectangle.PreviewMouseDown += MoveRectangle_PreviewMouseDown;
@@ -89,43 +146,46 @@ namespace CustomDiscordClient.Internal
 
         protected void ResizeRectangle_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            Rectangle rectangle = sender as Rectangle;
-            switch (rectangle.Name)
+            if (AllowResizing)
             {
-                case "top":
-                    Cursor = Cursors.SizeNS;
-                    ResizeWindow(ResizeDirection.Top);
-                    break;
-                case "bottom":
-                    Cursor = Cursors.SizeNS;
-                    ResizeWindow(ResizeDirection.Bottom);
-                    break;
-                case "left":
-                    Cursor = Cursors.SizeWE;
-                    ResizeWindow(ResizeDirection.Left);
-                    break;
-                case "right":
-                    Cursor = Cursors.SizeWE;
-                    ResizeWindow(ResizeDirection.Right);
-                    break;
-                case "topLeft":
-                    Cursor = Cursors.SizeNWSE;
-                    ResizeWindow(ResizeDirection.TopLeft);
-                    break;
-                case "topRight":
-                    Cursor = Cursors.SizeNESW;
-                    ResizeWindow(ResizeDirection.TopRight);
-                    break;
-                case "bottomLeft":
-                    Cursor = Cursors.SizeNESW;
-                    ResizeWindow(ResizeDirection.BottomLeft);
-                    break;
-                case "bottomRight":
-                    Cursor = Cursors.SizeNWSE;
-                    ResizeWindow(ResizeDirection.BottomRight);
-                    break;
-                default:
-                    break;
+                Rectangle rectangle = sender as Rectangle;
+                switch (rectangle.Name)
+                {
+                    case "top":
+                        Cursor = Cursors.SizeNS;
+                        ResizeWindow(ResizeDirection.Top);
+                        break;
+                    case "bottom":
+                        Cursor = Cursors.SizeNS;
+                        ResizeWindow(ResizeDirection.Bottom);
+                        break;
+                    case "left":
+                        Cursor = Cursors.SizeWE;
+                        ResizeWindow(ResizeDirection.Left);
+                        break;
+                    case "right":
+                        Cursor = Cursors.SizeWE;
+                        ResizeWindow(ResizeDirection.Right);
+                        break;
+                    case "topLeft":
+                        Cursor = Cursors.SizeNWSE;
+                        ResizeWindow(ResizeDirection.TopLeft);
+                        break;
+                    case "topRight":
+                        Cursor = Cursors.SizeNESW;
+                        ResizeWindow(ResizeDirection.TopRight);
+                        break;
+                    case "bottomLeft":
+                        Cursor = Cursors.SizeNESW;
+                        ResizeWindow(ResizeDirection.BottomLeft);
+                        break;
+                    case "bottomRight":
+                        Cursor = Cursors.SizeNWSE;
+                        ResizeWindow(ResizeDirection.BottomRight);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -161,35 +221,38 @@ namespace CustomDiscordClient.Internal
 
         private void ResizeRectangle_MouseMove(object sender, MouseEventArgs e)
         {
-            Rectangle rectangle = sender as Rectangle;
-            switch (rectangle.Name)
+            if (AllowResizing)
             {
-                case "top":
-                    Cursor = Cursors.SizeNS;
-                    break;
-                case "bottom":
-                    Cursor = Cursors.SizeNS;
-                    break;
-                case "left":
-                    Cursor = Cursors.SizeWE;
-                    break;
-                case "right":
-                    Cursor = Cursors.SizeWE;
-                    break;
-                case "topLeft":
-                    Cursor = Cursors.SizeNWSE;
-                    break;
-                case "topRight":
-                    Cursor = Cursors.SizeNESW;
-                    break;
-                case "bottomLeft":
-                    Cursor = Cursors.SizeNESW;
-                    break;
-                case "bottomRight":
-                    Cursor = Cursors.SizeNWSE;
-                    break;
-                default:
-                    break;
+                Rectangle rectangle = sender as Rectangle;
+                switch (rectangle.Name)
+                {
+                    case "top":
+                        Cursor = Cursors.SizeNS;
+                        break;
+                    case "bottom":
+                        Cursor = Cursors.SizeNS;
+                        break;
+                    case "left":
+                        Cursor = Cursors.SizeWE;
+                        break;
+                    case "right":
+                        Cursor = Cursors.SizeWE;
+                        break;
+                    case "topLeft":
+                        Cursor = Cursors.SizeNWSE;
+                        break;
+                    case "topRight":
+                        Cursor = Cursors.SizeNESW;
+                        break;
+                    case "bottomLeft":
+                        Cursor = Cursors.SizeNESW;
+                        break;
+                    case "bottomRight":
+                        Cursor = Cursors.SizeNWSE;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         

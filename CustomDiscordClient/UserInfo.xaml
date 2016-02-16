@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CustomDiscordClient"
         xmlns:control="clr-namespace:CustomDiscordClient.Internal"
         mc:Ignorable="d"
-        Title="UserInfo" Height="409.632" Width="360.34">
+        Title="UserInfo" Height="409.632" Width="360.34" ShowSettingsButton="Hidden" AllowResizing="False" MaximizeButtonEnabled="False">
     <Grid>
         <Image x:Name="userAvatar" HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="100" Margin="0,23,0,0"/>
         <Label x:Name="userID" Content="Label" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,176,0,0"/>

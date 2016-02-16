@@ -45,6 +45,7 @@ namespace CustomDiscordClient
             RefreshContent();
             SetTheme();
         }
+
         public ServerView(DiscordServer server, DiscordClient client)
         {
             InitializeComponent();
@@ -222,16 +223,7 @@ namespace CustomDiscordClient
                 {
                     foreach (MessageStub stubby in messagesList.Items)
                     {
-                        if(stubby.MessageIDs.Count == 1)
-                        {
-                            Dispatcher.Invoke(() =>
-                            {
-                                messagesList.Items.Remove(stubby);
-                                messagesList.Items.Refresh();
-                            });
-                            break;
-                        }
-                        else if (stubby.MessageIDs.Contains(id))
+                        if (stubby.MessageIDs.Contains(id))
                         {
                             stubby.RemoveMessage(id);
                         }

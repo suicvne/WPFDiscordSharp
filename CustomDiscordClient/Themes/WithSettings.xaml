@@ -54,10 +54,6 @@
                     <Border BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.8" 
-                                Color="Blue" />
-                        </Border.Effect>
                         <Grid>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -75,7 +71,7 @@
                                            Grid.Row="0" Grid.Column="0"/>
                                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                                     <Button x:Name="settingsButton" Style="{StaticResource WindowButtonStyle}"
-                                            Content="i" Visibility="Hidden"/>
+                                            Content="i" Visibility="Visible"/>
                                     <Button x:Name="minimizeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="restoreButton" Style="{StaticResource WindowButtonStyle}"

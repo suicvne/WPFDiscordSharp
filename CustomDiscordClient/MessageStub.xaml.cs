@@ -129,14 +129,16 @@ namespace CustomDiscordClient
             string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
             Dispatcher.Invoke(() =>
             {
-                    foreach (var block in richTextBox.Document.Blocks)
+                foreach (var block in richTextBox.Document.Blocks)
+                {
+                    if ((new TextRange(block.ContentStart, block.ContentEnd).Text.Contains(NoMarkdown(message))))
                     {
-                        if ((new TextRange(block.ContentStart, block.ContentEnd).Text.Contains(NoMarkdown(message))))
-                        {
-                            richTextBox.Document.Blocks.Remove(block);
-                            break;
-                        }
+                        richTextBox.Document.Blocks.Remove(block);
+                        richTextBox.CaretPosition = richTextBox.Document.ContentEnd;
+                        richTextBox.CaretPosition.InsertTextInRun("\n<Removed message>");
+                        break;
                     }
+                }
             });
             Messages.Remove(message);
         }
