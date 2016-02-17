@@ -30,27 +30,27 @@ namespace CustomDiscordClient
 
         private void SetupTheme()
         {
-            if(DiscordClientConfig.DarkTheme)
+            if(App.ClientConfiguration.Settings.DarkTheme)
             {
-                this.Background = DiscordClientConfig.DarkThemeBackground;
-                this.Foreground = DiscordClientConfig.DarkThemeForeground;
+                this.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
+                this.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                label.Foreground = DiscordClientConfig.DarkThemeForeground;
-                label1.Foreground = DiscordClientConfig.DarkThemeForeground;
+                label.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                label1.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                emailTextBox.Foreground = DiscordClientConfig.DarkThemeForeground;
-                emailTextBox.Background = DiscordClientConfig.DarkThemeBackground;
+                emailTextBox.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                emailTextBox.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
                 emailTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
 
-                passwordTextBox.Foreground = DiscordClientConfig.DarkThemeForeground;
-                passwordTextBox.Background = DiscordClientConfig.DarkThemeBackground;
+                passwordTextBox.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                passwordTextBox.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
                 passwordTextBox.BorderThickness = new Thickness(0, 0, 0, 1);
 
-                loginButton.Foreground = DiscordClientConfig.DarkThemeForeground;
-                loginButton.Background = DiscordClientConfig.DarkThemeBackground;
+                loginButton.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                loginButton.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
 
-                cancelButton.Foreground = DiscordClientConfig.DarkThemeForeground;
-                cancelButton.Background = DiscordClientConfig.DarkThemeBackground;
+                cancelButton.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                cancelButton.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
             }
         }
 

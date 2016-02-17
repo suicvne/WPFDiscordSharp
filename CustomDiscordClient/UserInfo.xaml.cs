@@ -33,16 +33,16 @@ namespace CustomDiscordClient
 
         private void SetupTheme()
         {
-            if(DiscordClientConfig.DarkTheme)
+            if(App.ClientConfiguration.Settings.DarkTheme)
             {
-                this.Foreground = DiscordClientConfig.DarkThemeForeground;
-                this.Background = DiscordClientConfig.DarkThemeBackground;
+                this.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                this.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
 
-                usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
-                userID.Foreground = DiscordClientConfig.DarkThemeForeground;
+                usernameLabel.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                userID.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                inServers.Foreground = DiscordClientConfig.DarkThemeForeground;
-                inServers.Background = DiscordClientConfig.DarkThemeBackground;
+                inServers.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
+                inServers.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
                 inServers.BorderThickness = new Thickness(0);
             }
         }

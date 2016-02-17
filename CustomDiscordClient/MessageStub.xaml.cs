@@ -52,7 +52,7 @@ namespace CustomDiscordClient
 
         private void SetTheme()
         {
-            usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+            usernameLabel.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
         }
 
         public void RefreshContent()
@@ -77,8 +77,8 @@ namespace CustomDiscordClient
                         usernameLabel.Foreground = new SolidColorBrush(roleColour);
                     }
                     else
-                        if(DiscordClientConfig.DarkTheme)
-                            usernameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+                        if(App.ClientConfiguration.Settings.DarkTheme)
+                            usernameLabel.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
                 });
             }
             if(Message.author != null)

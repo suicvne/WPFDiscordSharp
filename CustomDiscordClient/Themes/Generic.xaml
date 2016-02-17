@@ -41,7 +41,7 @@
     <Style TargetType="{x:Type local:CustomWindow}">
         <Setter Property="WindowStyle" Value="None"/>
         <Setter Property="ResizeMode" Value="NoResize"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="White"/>
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="Silver"/>
@@ -53,10 +53,6 @@
                     <Border BorderThickness="{TemplateBinding BorderThickness}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Background="{TemplateBinding Background}">
-                        <Border.Effect>
-                            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.8" 
-                                Color="Blue" />
-                        </Border.Effect>
                         <Grid>
                             <Grid>
                                 <Grid.RowDefinitions>

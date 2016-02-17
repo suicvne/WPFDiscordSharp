@@ -57,8 +57,8 @@ namespace CustomDiscordClient
 
         private void SetupTheme()
         {
-            if(DiscordClientConfig.DarkTheme)
-                serverNameLabel.Foreground = DiscordClientConfig.DarkThemeForeground;
+            if(App.ClientConfiguration.Settings.DarkTheme)
+                serverNameLabel.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
         }
     }
 }

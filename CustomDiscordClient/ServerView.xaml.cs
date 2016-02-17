@@ -59,19 +59,19 @@ namespace CustomDiscordClient
         {
             this.ShowSettingsButton = Visibility.Hidden;
             messageToSend.AcceptsReturn = false;
-            if (DiscordClientConfig.DarkTheme)
+            if (App.ClientConfiguration.Settings.DarkTheme)
             {
-                this.Background = DiscordClientConfig.DarkThemeBackground;
-                Foreground = DiscordClientConfig.DarkThemeForeground;
+                this.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
+                Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                channelsListBox.Background = DiscordClientConfig.DarkThemeBackground;
-                channelsListBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+                channelsListBox.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
+                channelsListBox.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                membersListBox.Background = DiscordClientConfig.DarkThemeBackground;
-                membersListBox.Foreground = DiscordClientConfig.DarkThemeForeground;
+                membersListBox.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
+                membersListBox.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
-                messagesList.Background = DiscordClientConfig.DarkThemeBackground;
-                messagesList.Foreground = DiscordClientConfig.DarkThemeForeground;
+                messagesList.Background = App.ClientConfiguration.Settings.DarkThemeBackground;
+                messagesList.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
 
                 messageToSend.Background = messagesList.Background;
                 messageToSend.Foreground = messagesList.Foreground;

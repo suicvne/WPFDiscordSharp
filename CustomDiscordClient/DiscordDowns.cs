@@ -141,8 +141,8 @@ namespace CustomDiscordClient
             {
                 b.Tag = id;
                 b.ContextMenu = _contextMenu;
-                if (DiscordClientConfig.DarkTheme)
-                    b.Foreground = DiscordClientConfig.DarkThemeForeground;
+                if (App.ClientConfiguration.Settings.DarkTheme)
+                    b.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
                 final.Add(b);
             }
 
@@ -762,8 +762,8 @@ namespace CustomDiscordClient
             var result = new Run(span);
             result.FontFamily = new FontFamily("Source Code Pro");
             result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 200, G = 200, B = 200, A = 255 });
-            if (DiscordClientConfig.DarkTheme)
-                result.Foreground = DiscordClientConfig.DarkThemeBackground;
+            if (App.ClientConfiguration.Settings.DarkTheme)
+                result.Foreground = App.ClientConfiguration.Settings.DarkThemeBackground;
             //result.MouseEnter += (sender, e) =>
             //{
             //    result.Background = new SolidColorBrush(new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 0 });
@@ -920,8 +920,8 @@ namespace CustomDiscordClient
                 result.IsEnabled = true;
 
                 System.Windows.Media.Color roleColour = new System.Windows.Media.Color() { R = 0, G = 0, B = 0, A = 255 };
-                if (DiscordClientConfig.DarkTheme)
-                    roleColour = DiscordClientConfig.ColorDarkForeground;
+                if (App.ClientConfiguration.Settings.DarkTheme)
+                    roleColour = App.ClientConfiguration.Settings.ColorDarkForeground;
                 u.Roles.ForEach(x =>
                 {
                     if(x.position > -1 && x.name != "@everyone")
