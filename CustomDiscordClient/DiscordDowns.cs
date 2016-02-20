@@ -171,52 +171,52 @@ namespace CustomDiscordClient
                 bl.Margin = new Thickness(0);
                 final.Add(bl);
             }
-            //if (attachments.Count > 0)
-            //{
-            //    foreach (Uri u in attachments)
-            //    {
-            //        var id = $"{u.Host}\\{new string(u.LocalPath.Take(90).ToArray())}";
+            if (attachments.Count > 0)
+            {
+                foreach (Uri u in attachments)
+                {
+                    var id = $"{u.Host}\\{new string(u.LocalPath.Take(90).ToArray())}";
 
-            //        using (WebClient wc = new WebClient())
-            //        {
-            //            string path = $"compact_cache/cocaine/embed/{id}";
+                    using (WebClient wc = new WebClient())
+                    {
+                        string path = $"compact_cache/cocaine/embed/{id}";
 
-            //            if (!Directory.Exists(System.IO.Path.GetDirectoryName(path)))
-            //                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+                        if (!Directory.Exists(System.IO.Path.GetDirectoryName(path)))
+                            Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
 
-            //            if (!File.Exists(path))
-            //            {
-            //                try
-            //                {
-            //                    wc.DownloadFile(u, path);
-            //                }
-            //                catch
-            //                {
-            //                    try
-            //                    {
-            //                        wc.DownloadFile("http://i.imgur.com/zeuxkxP.png", path);
-            //                    }
-            //                    catch
-            //                    {
-            //                        //File.Copy("error.png", System.IO.Path.GetFullPath(path));
-            //                    }
-            //                }
-            //            }
-            //        }
+                        if (!File.Exists(path))
+                        {
+                            try
+                            {
+                                wc.DownloadFile(u, path);
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    wc.DownloadFile("http://i.imgur.com/zeuxkxP.png", path);
+                                }
+                                catch
+                                {
+                                    //File.Copy("error.png", System.IO.Path.GetFullPath(path));
+                                }
+                            }
+                        }
+                    }
 
-            //        BitmapImage bi = new BitmapImage(new Uri($"compact_cache\\cocaine\\embed\\{id}", UriKind.Relative));
-            //        Image image = new Image() { Source = bi, MaxHeight = 400, StretchDirection = StretchDirection.DownOnly, Stretch = Stretch.Uniform };
-            //        image.MouseDown += (s, e) =>
-            //        {
-            //            Process.Start(new ProcessStartInfo($"compact_cache\\cocaine\\embed\\{id}"));
-            //        };
-            //        image.Cursor = Cursors.Hand;
-            //        InlineUIContainer container = new InlineUIContainer(image);
-            //        Paragraph p = new Paragraph(container);
-            //        p.Margin = new Thickness(0);
-            //        final.Add(p);
-            //    }
-            //}
+                    BitmapImage bi = new BitmapImage(new Uri($"compact_cache\\cocaine\\embed\\{id}", UriKind.Relative));
+                    Image image = new Image() { Source = bi, MaxHeight = 400, StretchDirection = StretchDirection.DownOnly, Stretch = Stretch.Uniform };
+                    image.MouseDown += (s, e) =>
+                    {
+                        Process.Start(new ProcessStartInfo($"compact_cache\\cocaine\\embed\\{id}"));
+                    };
+                    image.Cursor = Cursors.Hand;
+                    InlineUIContainer container = new InlineUIContainer(image);
+                    Paragraph p = new Paragraph(container);
+                    p.Margin = new Thickness(0);
+                    final.Add(p);
+                }
+            }
 
 
             return final;
@@ -812,6 +812,8 @@ namespace CustomDiscordClient
             return Evaluate(text, RE_URL, HyperlinkEvaluator, defaultHandler);
         }
 
+        private string[] ValidExtensions = new string[] { "png", "jpg", "bmp", "jpeg" };
+
         private Inline HyperlinkEvaluator(Match match)
         {
             if (match == null)
@@ -835,14 +837,23 @@ namespace CustomDiscordClient
                 result.IsEnabled = true;
                 UriBuilder ubu = new UriBuilder(url);
                 var uri = ubu.Uri;
-                //if (DiscordClient.ValidExtensions.Any(x => uri.ToString().EndsWith(x)))
-                //{
+                if (ValidExtensions.Any(x => uri.ToString().EndsWith(x)))
+                {
                     attachments.Add(ubu.Uri);
-                //}
+                }
 
                 result.CommandParameter = null;
                 result.Command = null;
-                result.Click += (sender, args) => System.Diagnostics.Process.Start(ubu.Uri.ToString());
+                result.MouseEnter += (sender, args) => Mouse.OverrideCursor = Cursors.Hand;
+                result.MouseLeave += (sender, args) => Mouse.OverrideCursor = null;
+                result.Click += (sender, args) => Process.Start(ubu.Uri.ToString());
+                result.MouseDown += (sender, args) =>
+                {
+                    if(args.LeftButton == MouseButtonState.Pressed)
+                        Process.Start(ubu.Uri.ToString());
+                    else if(args.RightButton == MouseButtonState.Pressed)
+                        Clipboard.SetText(ubu.Uri.ToString());
+                };
                 return result;
 
             }

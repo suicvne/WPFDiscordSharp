@@ -26,7 +26,7 @@ namespace CustomDiscordClient
     public partial class MainWindow : CustomWindow
     {
         #region Notification stuffs
-        ToastManager toastManager = new ToastManager("DiscordWPF");
+        ToastManager toastManager = new ToastManager("Dissonance");
         NotifyIcon notificationIcon;
         SoundPlayer notificationSound = new SoundPlayer(CustomDiscordClient.Properties.Resources.notification);
 #endregion
@@ -48,7 +48,7 @@ namespace CustomDiscordClient
             if (!App.ClientConfiguration.Settings.UseWindows10Notifications)
             {
                 notificationIcon = new NotifyIcon();
-                notificationIcon.Text = "WPF Discord";
+                notificationIcon.Text = "Dissonance";
                 notificationIcon.Visible = true;
                 notificationIcon.Icon = CustomDiscordClient.Properties.Resources.taskbar;
                 notificationIcon.BalloonTipIcon = ToolTipIcon.None;
@@ -62,7 +62,7 @@ namespace CustomDiscordClient
 
             SetupEvents();
 
-            Title = "Connecting..";
+            Title = "Dissonance - Connecting..";
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
             if(MainClient.SendLoginRequest() != null)
@@ -77,7 +77,13 @@ namespace CustomDiscordClient
 
         private void MainWindow_SettingsGearClicked(object sender, EventArgs e)
         {
-            App.RestartClient();
+            Settings settings = new Settings();
+            settings.Closed += (sxc, exc) =>
+            {
+                if (settings.NeedsRestart)
+                    App.RestartClient();
+            };
+            settings.ShowDialog();
         }
 
         private void SetupTheme()
@@ -101,7 +107,7 @@ namespace CustomDiscordClient
         {
             MainClient.Connected += (sender, e) =>
             {
-                Dispatcher.Invoke(()=>this.Title = "Discord - " + e.user.Username);
+                Dispatcher.Invoke(()=>this.Title = "Dissonance - " + e.user.Username);
                 PopulateLists();
                 
                 Dispatcher.Invoke(()=>

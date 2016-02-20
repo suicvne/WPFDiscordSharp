@@ -104,7 +104,7 @@ namespace CustomDiscordClient
         {
             if (Server.IconURL != null)
                 this.Icon = new BitmapImage(new Uri(Server.IconURL));
-            this.Title = $"Discord - {Server.name}";
+            this.Title = $"Dissonance - {Server.name}";
             //TODO
             Server.channels.ForEach(x =>
             {
@@ -243,7 +243,7 @@ namespace CustomDiscordClient
                 if(m.Channel() == channel)
                 {
                     AppendMessage(m);
-                    Title = $"Discord - {Server.name} - #{channel.Name}";
+                    Title = $"Dissonance - {Server.name} - #{channel.Name}";
                 }
             }
             MainScroller.ScrollToBottom();

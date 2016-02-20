@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,7 +37,13 @@ namespace CustomDiscordClient
                 return OSFriendly.Windows10;
             else
                 return OSFriendly.Unknown;
+        }
 
+        public static bool IsWindows10()
+        {
+            var reg = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+            string productName = reg.GetValue("ProductName") as string;
+            return productName.StartsWith("Windows 10"); //TODO: better workaround for this
         }
 
         public static double OSVersion()

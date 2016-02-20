@@ -6,8 +6,12 @@
         xmlns:local="clr-namespace:CustomDiscordClient"
         xmlns:control="clr-namespace:CustomDiscordClient.Internal"
         mc:Ignorable="d"
-        Title="Settings" Height="355.241" Width="491.218" AllowResizing="False" ShowSettingsButton="Hidden" EnableMaximizeButton="False" ShowMaximizeButton="Hidden">
+        Title="Dissonance - Settings" Height="264.241" Width="468.218" AllowResizing="False" ShowSettingsButton="Hidden" EnableMaximizeButton="False" ShowMaximizeButton="Hidden">
     <Grid>
+        <CheckBox x:Name="darkThemeCheckbox" Content="enable dark theme" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="win10Notifications" Content="enable windows 10 notifications" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" ToolTip="If on Windows 10, you will have the option to use native Windows 10 style action center notifications as opposed to the older, notify icon styled bubbles."/>
+        <Button x:Name="button" Content="Save" HorizontalAlignment="Right" Margin="0,0,11,11" VerticalAlignment="Bottom" Width="75" Click="button_Click"/>
+        <Button x:Name="button_Copy" Content="Logout" HorizontalAlignment="Left" Margin="6,0,0,11" VerticalAlignment="Bottom" Width="75" Click="button_Copy_Click" />
 
     </Grid>
 </control:CustomWindow>
