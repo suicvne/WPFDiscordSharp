@@ -1,4 +1,5 @@
-﻿using DiscordSharp.Objects;
+﻿using DiscordSharp;
+using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,16 +25,20 @@ namespace CustomDiscordClient
     public partial class MessageStub : UserControl
     {
         public DiscordMessage Message { get; internal set; }
+        internal DiscordClient mainClientReference { get; set; }
         public List<DiscordMessage> Messages { get; internal set; } = new List<DiscordMessage>();
         public List<string> MessageIDs { get; internal set; } = new List<string>();
+
+        internal event EventHandler<EventArgs> IgnoredUserAdded;
 
         public MessageStub()
         {
             InitializeComponent();
         }
 
-        public MessageStub(DiscordMessage message)
+        public MessageStub(DiscordMessage message, DiscordClient refer)
         {
+            mainClientReference = refer;
             InitializeComponent();
             Message = message;
             RefreshContent();
@@ -69,7 +74,7 @@ namespace CustomDiscordClient
                 {
                     if (x.position > -1 && x.name != "@everyone")
                     {
-                        Color roleColour = new Color();
+                        System.Windows.Media.Color roleColour = new System.Windows.Media.Color();
                         roleColour.A = 255;
                         roleColour.R = (byte)x.color.R;
                         roleColour.G = (byte)x.color.G;
@@ -103,10 +108,47 @@ namespace CustomDiscordClient
 
             MessageIDs.Add(Message.id);
             Messages.Add(Message);
+
+            SetupContextMenu();
+        }
+
+        public void SetMessageText(string text)
+        {
+            richTextBox.Document.Blocks.Clear();
+            richTextBox.Document.Blocks.Add(new Paragraph(new Run(text)));
+        }
+
+        private void SetupContextMenu()
+        {
+            ContextMenu cm = new ContextMenu();
+            MenuItem IgnoreUserMenuItem = new MenuItem();
+            IgnoreUserMenuItem.Header = "Ignore user";
+            if (Message.author != null)
+            {
+                if (Message.author.ID == mainClientReference.Me.ID)
+                    IgnoreUserMenuItem.IsEnabled = false;
+            }
+            else
+                IgnoreUserMenuItem.IsEnabled = false;
+
+            IgnoreUserMenuItem.Click += (sender, e) =>
+            {
+                if(IgnoreUserMenuItem.IsEnabled) //precaution
+                {
+                    App.ClientConfiguration.Settings.IgnoredUserIDs.Add(Message.author.ID);
+                    if (IgnoredUserAdded != null)
+                        IgnoredUserAdded(this, new EventArgs());
+                }
+            };
+            cm.Items.Add(IgnoreUserMenuItem);
+
+            this.usernameLabel.ContextMenu = cm;
         }
 
         public void AppendMessage(DiscordMessage message)
         {
+            if(message.author != null && App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(message.author.ID))
+            { return; }
             DiscordChannel channel = message.Channel() as DiscordChannel;
             var markdownParser = new Markdown(channel.parent, null);
             var blocks = markdownParser.Transform(message.content, $"{message.id};{channel.ID}");

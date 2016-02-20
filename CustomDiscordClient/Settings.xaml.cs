@@ -1,4 +1,6 @@
 ﻿using CustomDiscordClient.Internal;
+using DiscordSharp;
+using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +23,10 @@ namespace CustomDiscordClient
     public partial class Settings : CustomWindow
     {
         public bool NeedsRestart { get; internal set; } = false;
-        public Settings()
+        internal DiscordClient mainClientReference { get; set; }
+        public Settings(DiscordClient clientref)
         {
+            mainClientReference = clientref;
             InitializeComponent();
             SetupTheme();
             LoadSettings();
@@ -36,10 +40,17 @@ namespace CustomDiscordClient
                 this.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
                 darkThemeCheckbox.Foreground = Foreground;
                 darkThemeCheckbox.Background = Background;
+                win10Notifications.Foreground = Foreground;
+                win10Notifications.Background = Background;
                 button.Foreground = Foreground;
                 button.Background = Background;
                 button_Copy.Foreground = Foreground;
                 button_Copy.Background = Background;
+                ignoredUsersLabel.Foreground = Foreground;
+                ignoredUsersLabel.Background = Background;
+                ignoredUsersListBox.Foreground = Foreground;
+                ignoredUsersListBox.Background = Background;
+                //ignoredUsersListBox.BorderThickness = new Thickness(0, 0, 0, 0);
             }
         }
 
@@ -52,6 +63,37 @@ namespace CustomDiscordClient
             {
                 win10Notifications.IsEnabled = false;
                 win10Notifications.Content += $" (Not on {Utilities.OSName().ToString()})";
+            }
+
+            if(App.ClientConfiguration.Settings.IgnoredUserIDs.Count > 0)
+            {
+                App.ClientConfiguration.Settings.IgnoredUserIDs.ForEach(x =>
+                {
+                    DiscordMember memberFromID = mainClientReference.Me;
+                    mainClientReference.GetServersList().ForEach(server =>
+                    {
+                        server.members.ForEach(meme =>
+                        {
+                            if (meme.ID == x)
+                            {
+                                memberFromID = meme;
+                                return;
+                            }
+                        });
+                    });
+                    if(memberFromID.ID != mainClientReference.Me.ID)
+                    {
+                        ignoredUsersListBox.Items.Add($"{memberFromID.Username} ({memberFromID.ID})");
+                    }
+                    else
+                    {
+                        ignoredUsersListBox.Items.Add($"Unknown user ({x})");
+                    }
+                });
+            }
+            else
+            {
+                ignoredUsersListBox.Items.Add("None! You sure are patient.");
             }
         }
 

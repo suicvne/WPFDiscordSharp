@@ -77,7 +77,7 @@ namespace CustomDiscordClient
 
         private void MainWindow_SettingsGearClicked(object sender, EventArgs e)
         {
-            Settings settings = new Settings();
+            Settings settings = new Settings(MainClient);
             settings.Closed += (sxc, exc) =>
             {
                 if (settings.NeedsRestart)

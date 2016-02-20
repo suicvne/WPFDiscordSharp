@@ -36,6 +36,7 @@ namespace CustomDiscordClient
         {
             InitializeComponent();
             SetTheme();
+            AllowResizing = true;
         }
 
         public ServerView(DiscordServer server)
@@ -44,6 +45,7 @@ namespace CustomDiscordClient
             Server = server;
             RefreshContent();
             SetTheme();
+            AllowResizing = true;
         }
 
         public ServerView(DiscordServer server, DiscordClient client)
@@ -53,6 +55,7 @@ namespace CustomDiscordClient
             Server = server;
             RefreshContent();
             SetTheme();
+            AllowResizing = true;
         }
 
         private void SetTheme()
@@ -166,6 +169,7 @@ namespace CustomDiscordClient
                 if (currentChannel != null)
                 {
                     LoadChannel(currentChannel);
+                    IgnoreUserUpdate(this, new EventArgs()); //force clearing out
                 }
             }
         }
@@ -191,23 +195,47 @@ namespace CustomDiscordClient
                     }
                     else
                     {
-                        MessageStub stub = new MessageStub(m);
+                        MessageStub stub = new MessageStub(m, mainClientReference);
+                        if (stub.Message.author != null)
+                            if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                                stub.SetMessageText("<Ignored Message>");
+                        stub.IgnoredUserAdded += IgnoreUserUpdate;
                         messagesList.Items.Add(stub);
                         MainScroller.ScrollToBottom();
                     }
                 }
                 else
                 {
-                    MessageStub stub = new MessageStub(m);
+                    MessageStub stub = new MessageStub(m, mainClientReference);
+                    if (stub.Message.author != null)
+                        if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                            stub.SetMessageText("<Ignored Message>");
+                    stub.IgnoredUserAdded += IgnoreUserUpdate;
                     messagesList.Items.Add(stub);
                     MainScroller.ScrollToBottom();
                 }
             }
             else
             {
-                MessageStub stub = new MessageStub(m);
+                MessageStub stub = new MessageStub(m, mainClientReference);
+                if(stub.Message.author != null)
+                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                        stub.SetMessageText("<Ignored Message>");
+                stub.IgnoredUserAdded += IgnoreUserUpdate;
                 messagesList.Items.Add(stub);
                 MainScroller.ScrollToBottom();
+            }
+        }
+
+        public void IgnoreUserUpdate(object sender, EventArgs e)
+        {
+            foreach(MessageStub stub in messagesList.Items)
+            {
+                if (stub.Message.author != null)
+                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                    {
+                        stub.SetMessageText("<Ignored Message>");
+                    }
             }
         }
 

@@ -20,6 +20,7 @@ namespace CustomDiscordClient
 
         [JsonProperty("custom_background_color")]
         private Color _ColorDarkBackground = new Color { R = 16, G = 17, B = 19, A = 255 };
+        [JsonIgnore]
         public Color ColorDarkBackground
         {
             get
@@ -35,6 +36,7 @@ namespace CustomDiscordClient
 
         [JsonProperty("custom_foreground_color")]
         private Color _ColorDarkForeground = new Color { R = 207, G = 207, B = 207, A = 255 };
+        [JsonIgnore]
         public Color ColorDarkForeground
         {
             get
@@ -48,7 +50,25 @@ namespace CustomDiscordClient
             }
         }
 
+        [JsonProperty("ignored_user_ids")]
+        private List<string> _IgnoredUserIDs = new List<string>();
+
+        [JsonIgnore]
+        public List<string> IgnoredUserIDs
+        {
+            get
+            {
+                return _IgnoredUserIDs;
+            }
+            internal set
+            {
+                _IgnoredUserIDs = value;
+            }
+        }
+
+        [JsonIgnore]
         public SolidColorBrush DarkThemeForeground;
+        [JsonIgnore]
         public SolidColorBrush DarkThemeBackground;
 
         public LocalClientSettings()

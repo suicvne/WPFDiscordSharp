@@ -12,6 +12,7 @@
         <CheckBox x:Name="win10Notifications" Content="enable windows 10 notifications" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" ToolTip="If on Windows 10, you will have the option to use native Windows 10 style action center notifications as opposed to the older, notify icon styled bubbles."/>
         <Button x:Name="button" Content="Save" HorizontalAlignment="Right" Margin="0,0,11,11" VerticalAlignment="Bottom" Width="75" Click="button_Click"/>
         <Button x:Name="button_Copy" Content="Logout" HorizontalAlignment="Left" Margin="6,0,0,11" VerticalAlignment="Bottom" Width="75" Click="button_Copy_Click" />
-
+        <ListBox x:Name="ignoredUsersListBox" HorizontalAlignment="Left" Height="100" Margin="10,0,-1,54" VerticalAlignment="Bottom" Width="208"/>
+        <Label x:Name="ignoredUsersLabel" Content="ignored users" HorizontalAlignment="Left" Margin="11,0,0,154" VerticalAlignment="Bottom"/>
     </Grid>
 </control:CustomWindow>
