@@ -127,15 +127,14 @@ namespace CustomDiscordClient
             _contextMenu = cm;
         }
 
-        public List<Block> Transform(string text, string id)
+        public List<Block> Transform(DiscordMessage message, string id)
         {
-            if (text == null)
+            if (message == null)
             {
                 throw new ArgumentNullException("text");
             }
-
-            text = Normalize(text);
-            var document = RunBlockGamut(text);
+            string asText = Normalize(message.content);
+            var document = RunBlockGamut(message.content, message);
             var final = new List<Block>();
             foreach (var b in document)
             {
@@ -153,7 +152,7 @@ namespace CustomDiscordClient
         /// <summary>
         /// Perform transformations that form block-level tags like paragraphs, headers, and list items.
         /// </summary>
-        private IEnumerable<Block> RunBlockGamut(string text)
+        private IEnumerable<Block> RunBlockGamut(string text, DiscordMessage message = null)
         {
             if (text == null)
             {
@@ -171,6 +170,55 @@ namespace CustomDiscordClient
                 bl.Margin = new Thickness(0);
                 final.Add(bl);
             }
+            #region evaluate real attachments first\
+            if (message != null)
+            {
+                if (message.attachments.Length > 0)
+                {
+                    foreach (var attachment in message.attachments) //do first
+                    {
+                        var asUri = new Uri(attachment.URL);
+                        var id = $"{asUri.Host}\\{new string(asUri.LocalPath.Take(90).ToArray())}";
+                        using (WebClient wc = new WebClient())
+                        {
+                            string path = $"compact_cache/cocaine/embed/{id}";
+                            if (!Directory.Exists(System.IO.Path.GetDirectoryName(path)))
+                                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(path));
+
+                            if (!File.Exists(path))
+                            {
+                                try
+                                {
+                                    wc.DownloadFile(asUri, path);
+                                }
+                                catch
+                                {
+                                    try
+                                    {
+                                        wc.DownloadFile("http://i.imgur.com/zeuxkxP.png", path);
+                                    }
+                                    catch
+                                    { }
+                                }
+                            }
+                        }
+                        BitmapImage bi = new BitmapImage(new Uri($"compact_cache\\cocaine\\embed\\{id}", UriKind.Relative));
+                        Image image = new Image() { Source = bi, MaxHeight = 400, StretchDirection = StretchDirection.DownOnly, Stretch = Stretch.Uniform };
+                        image.MouseDown += (s, e) =>
+                        {
+                            Process.Start(new ProcessStartInfo($"compact_cache\\cocaine\\embed\\{id}"));
+                        };
+                        image.Cursor = Cursors.Hand;
+                        InlineUIContainer container = new InlineUIContainer(image);
+                        Paragraph p = new Paragraph(container);
+                        p.Margin = new Thickness(0);
+                        final.Add(p);
+                        break;
+                    }
+                }
+            }
+            #endregion
+            #region evaluate URL attachments last to prefer real attachments
             if (attachments.Count > 0)
             {
                 foreach (Uri u in attachments)
@@ -217,6 +265,8 @@ namespace CustomDiscordClient
                     final.Add(p);
                 }
             }
+            #endregion
+
 
 
             return final;

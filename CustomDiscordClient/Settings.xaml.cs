@@ -3,6 +3,7 @@ using DiscordSharp;
 using DiscordSharp.Objects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,6 +53,12 @@ namespace CustomDiscordClient
                 ignoredUsersListBox.Background = Background;
                 //ignoredUsersListBox.BorderThickness = new Thickness(0, 0, 0, 0);
             }
+        }
+
+        private int SizeOfCacheFolderInMB()
+        {
+            DirectoryInfo cacheInfo = new DirectoryInfo("compact_cache");
+            
         }
 
         private void LoadSettings()

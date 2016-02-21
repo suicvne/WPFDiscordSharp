@@ -97,7 +97,7 @@ namespace CustomDiscordClient
                 richTextBox.Document.Blocks.Clear();
                 DiscordChannel channel = Message.Channel() as DiscordChannel;
                 var markdownParser = new CustomDiscordClient.Markdown(channel.parent, null);
-                var blocks = markdownParser.Transform(Message.content, $"{Message.id};{channel.ID}");
+                var blocks = markdownParser.Transform(Message, $"{Message.id};{channel.ID}");
                 richTextBox.Document.Blocks.AddRange(blocks);
                 message.Text = Message.content;
                 if (Message.content.Trim() == "" && Message.attachments.Length > 0)
@@ -126,7 +126,10 @@ namespace CustomDiscordClient
             if (Message.author != null)
             {
                 if (Message.author.ID == mainClientReference.Me.ID)
+                {
                     IgnoreUserMenuItem.IsEnabled = false;
+                    IgnoreUserMenuItem.Header = "I wish I could ignore myself too...";
+                }
             }
             else
                 IgnoreUserMenuItem.IsEnabled = false;
@@ -151,7 +154,7 @@ namespace CustomDiscordClient
             { return; }
             DiscordChannel channel = message.Channel() as DiscordChannel;
             var markdownParser = new Markdown(channel.parent, null);
-            var blocks = markdownParser.Transform(message.content, $"{message.id};{channel.ID}");
+            var blocks = markdownParser.Transform(message, $"{message.id};{channel.ID}");
             richTextBox.Document.Blocks.AddRange(blocks);
             ToolTip = $"Sent at {message.timestamp}";
             MessageIDs.Add(message.id);
