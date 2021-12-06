@@ -33,14 +33,14 @@ namespace CustomDiscordClient
             Server = server;
             InitializeComponent();
             Icon = new BitmapImage(new Uri(server.IconURL));
-            Title = $"Info for Server {Server.name}";
+            Title = $"Info for Server {Server.Name}";
 
 
             serverIcon.Source = Icon;
-            serverNameLabel.Content = Server.name;
-            owner.Content = $"Owner: {Server.owner.Username} ({Server.owner.ID})";
-            channelsNumeber.Content = $"Channels Count: {Server.channels.Count}";
-            membersNumber.Content = $"Members Count: {Server.members.Count}";
+            serverNameLabel.Content = Server.Name;
+            owner.Content = $"Owner: {Server.Owner.Username} ({Server.Owner.ID})";
+            channelsNumeber.Content = $"Channels Count: {Server.Channels.Count}";
+            membersNumber.Content = $"Members Count: {Server.Members.Count}";
         }
         private int angle = 0;
         private void serverIcon_MouseDown(object sender, MouseButtonEventArgs e)

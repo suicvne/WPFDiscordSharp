@@ -92,12 +92,15 @@ namespace CustomDiscordClient
 
         private async Task<bool> doLoginStuff(string user, string pass)
         {
+#if DEBUG
+            return true;
+#else
             bool returnval = false;
 
             await Task.Run(() =>
             {
                 DiscordClient tempClient = new DiscordClient();
-                tempClient.ClientPrivateInformation = new DiscordUserInformation { email = user, password = pass };
+                tempClient.ClientPrivateInformation = new DiscordUserInformation { Email = user, Password = pass };
                 if (tempClient.SendLoginRequest() != null)
                 {
                     returnval = true;
@@ -107,6 +110,7 @@ namespace CustomDiscordClient
             });
 
             return returnval;
+#endif
         }
 
         private void cancelButton_Click(object sender, RoutedEventArgs e)

@@ -74,9 +74,9 @@ namespace CustomDiscordClient
 
             foreach(var server in mainClientReference.GetServersList())
             {
-                foreach(var __member in server.members)
+                foreach(var __member in server.Members)
                 {
-                    if(__member.ID == member.ID)
+                    if(__member.Value.ID == member.ID)
                     {
                         ServerStub stub = new ServerStub(server);
                         inServers.Items.Add(stub);

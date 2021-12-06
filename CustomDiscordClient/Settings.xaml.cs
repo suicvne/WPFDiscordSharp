@@ -58,7 +58,9 @@ namespace CustomDiscordClient
         private int SizeOfCacheFolderInMB()
         {
             DirectoryInfo cacheInfo = new DirectoryInfo("compact_cache");
-            
+            // TODO: ?
+
+            return -1;
         }
 
         private void LoadSettings()
@@ -79,14 +81,14 @@ namespace CustomDiscordClient
                     DiscordMember memberFromID = mainClientReference.Me;
                     mainClientReference.GetServersList().ForEach(server =>
                     {
-                        server.members.ForEach(meme =>
+                        foreach(var kvpMembers in server.Members)
                         {
-                            if (meme.ID == x)
+                            if(kvpMembers.Value.ID == x)
                             {
-                                memberFromID = meme;
+                                memberFromID = kvpMembers.Value;
                                 return;
                             }
-                        });
+                        }
                     });
                     if(memberFromID.ID != mainClientReference.Me.ID)
                     {

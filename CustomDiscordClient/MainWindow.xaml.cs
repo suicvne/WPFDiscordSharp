@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Media;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,25 @@ using Windows.UI.Notifications;
 
 namespace CustomDiscordClient
 {
+    public class FakeDiscordClient : DiscordClient
+    {
+        public new event EventHandler<DiscordConnectEventArgs> Connected;
+        public new void Connect(bool useDotNetWebsocket)
+        {
+            Console.WriteLine("Faking Discord session.....");
+
+            Thread.Sleep(1000);
+
+            
+            Connected.Invoke(this, new DiscordConnectEventArgs());
+        }
+
+        public new string SendLoginRequest()
+        {
+            return "OK";
+        }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -33,7 +53,7 @@ namespace CustomDiscordClient
 
 
         private List<ServerView> openServerViews;
-        DiscordClient MainClient;
+        FakeDiscordClient MainClient;
         Task discordTask;
         bool closing = false;
 
@@ -57,7 +77,7 @@ namespace CustomDiscordClient
             Icon = new BitmapImage(MagicalDiscordIcon);
             //channelsList.Visibility = Visibility.Hidden;
 
-            MainClient = new DiscordClient();
+            MainClient = new FakeDiscordClient();
             MainClient.RequestAllUsersOnStartup = true;
 
             SetupEvents();
@@ -66,7 +86,8 @@ namespace CustomDiscordClient
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
             if(MainClient.SendLoginRequest() != null)
-                discordTask = Task.Run(() => MainClient.Connect());
+                discordTask = Task.Run(() => ((FakeDiscordClient)MainClient).Connect());
+
 
             openServerViews = new List<ServerView>();
 
@@ -107,7 +128,7 @@ namespace CustomDiscordClient
         {
             MainClient.Connected += (sender, e) =>
             {
-                Dispatcher.Invoke(()=>this.Title = "Dissonance - " + e.user.Username);
+                Dispatcher.Invoke(()=>this.Title = "Dissonance - " + e.User.Username);
                 PopulateLists();
                 
                 Dispatcher.Invoke(()=>
@@ -126,7 +147,7 @@ namespace CustomDiscordClient
             {
                 if(e.DeletedMessage != null)
                 {
-                    var serverView = openServerViews.Find(x => x.Server.id == e.Channel.parent.id);
+                    var serverView = openServerViews.Find(x => x.Server.ID == e.Channel.Parent.ID);
                     if(serverView != null)
                     {
                         serverView.RemoveMessage(e.DeletedMessage);
@@ -134,7 +155,7 @@ namespace CustomDiscordClient
                 }
                 else
                 {
-                    var serverView = openServerViews.Find(x => x.Server.id == e.Channel.parent.id);
+                    var serverView = openServerViews.Find(x => x.Server.ID == e.Channel.Parent.ID);
                     if (serverView != null)
                     {
                         serverView.RemoveMessage(e.RawJson["d"]["id"].ToString(), e.RawJson["d"]["channel_id"].ToString());
@@ -144,20 +165,20 @@ namespace CustomDiscordClient
             MainClient.MentionReceived += (sender, e) =>
             {
                 string toReplace = $"<@{MainClient.Me.ID}>";
-                string message = e.message.content;
+                string message = e.Message.Content;
                 message = message.Replace(toReplace, $"@{MainClient.Me.Username}");
 
-                if (e.author.Avatar != null)
+                if (e.Author.Avatar != null)
                 {
-                    e.author.GetAvatar().Save("temp.png");
+                    e.Author.GetAvatar().Save("temp.png");
                 }
-                string messageToShow = e.message.content;
+                string messageToShow = e.Message.Content;
                 string idToReplace = $"<@{MainClient.Me.ID}>";
                 messageToShow = messageToShow.Replace(idToReplace, $"@{MainClient.Me.Username}");
                 if (App.ClientConfiguration.Settings.UseWindows10Notifications)
                 {
-                    var toast = toastManager.CreateToast(System.IO.Path.GetFullPath("temp.png"), $"Mention received from {e.author.Username}", $"{messageToShow}", "");
-                    lastNotification = $"{e.Channel.parent.id}:{e.Channel.ID}"; //server:channel
+                    var toast = toastManager.CreateToast(System.IO.Path.GetFullPath("temp.png"), $"Mention received from {e.Author.Username}", $"{messageToShow}", "");
+                    lastNotification = $"{e.Channel.Parent.ID}:{e.Channel.ID}"; //server:channel
                     toast.Activated += (sxc, exc) =>
                     {
                         string[] split = lastNotification.Split(new char[] { ':' }, 2);
@@ -166,24 +187,24 @@ namespace CustomDiscordClient
                         string channelID = split[1];
                         bool hasServer = false;
                         foreach (var serverView in openServerViews)
-                            if (serverView.Server.id == serverID)
+                            if (serverView.Server.ID == serverID)
                                 hasServer = true;
 
                         if (hasServer)
                         {
-                            Dispatcher.Invoke(() => openServerViews.Find(x => x.Server.id == serverID).Activate());
+                            Dispatcher.Invoke(() => openServerViews.Find(x => x.Server.ID == serverID).Activate());
                         }
                         else
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.id == serverID), MainClient);
+                                ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.ID == serverID), MainClient);
                                 view.Closed += (x, f) =>
                                 {
                                     openServerViews.Remove(x as ServerView);
                                 };
                                 openServerViews.Add(view);
-                                view.LoadChannel(view.Server.channels.Find(x => x.ID == channelID));
+                                view.LoadChannel(view.Server.Channels.Find(x => x.ID == channelID));
                                 view.Show();
                                 view.Activate();
                             });
@@ -194,7 +215,7 @@ namespace CustomDiscordClient
                 }
                 else
                 {
-                    lastNotification = $"{e.Channel.parent.id}:{e.Channel.ID}"; //server:channel
+                    lastNotification = $"{e.Channel.Parent.ID}:{e.Channel.ID}"; //server:channel
                     notificationIcon.BalloonTipClicked += (sxc, exc) =>
                     {
                         string[] split = lastNotification.Split(new char[] { ':' }, 2);
@@ -203,28 +224,28 @@ namespace CustomDiscordClient
                         string channelID = split[1];
                         bool hasServer = false;
                         foreach (var serverView in openServerViews)
-                            if (serverView.Server.id == serverID)
+                            if (serverView.Server.ID == serverID)
                                 hasServer = true;
 
                         if (hasServer)
-                            Dispatcher.Invoke(() => openServerViews.Find(x => x.Server.id == serverID).Activate());
+                            Dispatcher.Invoke(() => openServerViews.Find(x => x.Server.ID == serverID).Activate());
                         else
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.id == serverID), MainClient);
+                                ServerView view = new ServerView(MainClient.GetServersList().Find(x => x.ID == serverID), MainClient);
                                 view.Closed += (x, f) =>
                                 {
                                     openServerViews.Remove(x as ServerView);
                                 };
                                 openServerViews.Add(view);
-                                view.LoadChannel(view.Server.channels.Find(x => x.ID == channelID));
+                                view.LoadChannel(view.Server.Channels.Find(x => x.ID == channelID));
                                 view.Show();
                                 view.Activate();
                             });
                         }
                     };
-                    notificationIcon.BalloonTipTitle = $"Mentioned received from {e.author.Username}";
+                    notificationIcon.BalloonTipTitle = $"Mentioned received from {e.Author.Username}";
                     notificationIcon.BalloonTipText = $"{messageToShow}";
                     notificationIcon.ShowBalloonTip(2500); //2.5 seconds
                     notificationSound.PlaySync();
@@ -242,12 +263,12 @@ namespace CustomDiscordClient
             };
             MainClient.MessageReceived += (sender, e) =>
             {
-                DiscordServer serverIn = e.Channel.parent;
+                DiscordServer serverIn = e.Channel.Parent;
                 openServerViews.ForEach(x =>
                 {
-                    if(x.Server.id == serverIn.id)
+                    if(x.Server.ID == serverIn.ID)
                     {
-                        x.AddMessage(e.message);
+                        x.AddMessage(e.Message);
                     }
                 });
             };
@@ -259,7 +280,7 @@ namespace CustomDiscordClient
             {
                 serversListView.Items.Clear();
                 List<DiscordServer> tempCopy = MainClient.GetServersList();
-                tempCopy.Sort((s1, s2) => s1.name.CompareTo(s2.name));
+                tempCopy.Sort((s1, s2) => s1.Name.CompareTo(s2.Name));
                 foreach (var server in tempCopy)
                 {
                     ServerStub stub = new ServerStub(server);
@@ -291,7 +312,7 @@ namespace CustomDiscordClient
             //channelsList.Items.Clear();
             Dispatcher.Invoke(() =>
             {
-                server.channels.ForEach(x =>
+                server.Channels.ForEach(x =>
                 {
                     //if (x.type == "text")
                     //    channelsList.Items.Add($"#{x.name}");

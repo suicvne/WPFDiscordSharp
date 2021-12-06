@@ -107,9 +107,9 @@ namespace CustomDiscordClient
         {
             if (Server.IconURL != null)
                 this.Icon = new BitmapImage(new Uri(Server.IconURL));
-            this.Title = $"Dissonance - {Server.name}";
+            this.Title = $"Dissonance - {Server.Name}";
             //TODO
-            Server.channels.ForEach(x =>
+            Server.Channels.ForEach(x =>
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -130,18 +130,18 @@ namespace CustomDiscordClient
                 });
             });
 
-            Server.members.ForEach(x =>
+            foreach(var memberKvp in Server.Members)
             {
                 Dispatcher.Invoke(() =>
                 {
                     //TODO: make nice member stub
-                    if(x.Status == Status.Online)
-                        membersListBox.Items.Add(x.Username);
+                    if (memberKvp.Value.Status == Status.Online)
+                        membersListBox.Items.Add(memberKvp.Value.Username);
                 });
-            });
+            }
 
             channelsListBox.SelectedIndex = 0;
-            currentChannel = Server.channels.Find(x => x.Name == channelsListBox.SelectedItem.ToString().Substring(1));
+            currentChannel = Server.Channels.Find(x => x.Name == channelsListBox.SelectedItem.ToString().Substring(1));
             LoadChannel(currentChannel);
         }
 
@@ -165,7 +165,7 @@ namespace CustomDiscordClient
         {
             if (channelsListBox.SelectedIndex > -1)
             {
-                currentChannel = Server.channels.Find(x => x.Name == channelsListBox.Items[channelsSelectedIndex].ToString().Substring(1));
+                currentChannel = Server.Channels.Find(x => x.Name == channelsListBox.Items[channelsSelectedIndex].ToString().Substring(1));
                 if (currentChannel != null)
                 {
                     LoadChannel(currentChannel);
@@ -189,15 +189,15 @@ namespace CustomDiscordClient
                 var previousStub = (messagesList.Items[messagesList.Items.Count - 1] as MessageStub);
                 if ((previousStub.Message.timestamp - m.timestamp) < TimeSpan.FromMinutes(2))
                 {
-                    if (m.author == (messagesList.Items[messagesList.Items.Count - 1] as MessageStub).Message.author)
+                    if (m.Author == (messagesList.Items[messagesList.Items.Count - 1] as MessageStub).Message.Author)
                     {
                         (messagesList.Items[messagesList.Items.Count - 1] as MessageStub).AppendMessage(m);
                     }
                     else
                     {
                         MessageStub stub = new MessageStub(m, mainClientReference);
-                        if (stub.Message.author != null)
-                            if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                        if (stub.Message.Author != null)
+                            if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.Author.ID))
                                 stub.SetMessageText("<Ignored Message>");
                         stub.IgnoredUserAdded += IgnoreUserUpdate;
                         messagesList.Items.Add(stub);
@@ -207,8 +207,8 @@ namespace CustomDiscordClient
                 else
                 {
                     MessageStub stub = new MessageStub(m, mainClientReference);
-                    if (stub.Message.author != null)
-                        if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                    if (stub.Message.Author != null)
+                        if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.Author.ID))
                             stub.SetMessageText("<Ignored Message>");
                     stub.IgnoredUserAdded += IgnoreUserUpdate;
                     messagesList.Items.Add(stub);
@@ -218,8 +218,8 @@ namespace CustomDiscordClient
             else
             {
                 MessageStub stub = new MessageStub(m, mainClientReference);
-                if(stub.Message.author != null)
-                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                if(stub.Message.Author != null)
+                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.Author.ID))
                         stub.SetMessageText("<Ignored Message>");
                 stub.IgnoredUserAdded += IgnoreUserUpdate;
                 messagesList.Items.Add(stub);
@@ -231,8 +231,8 @@ namespace CustomDiscordClient
         {
             foreach(MessageStub stub in messagesList.Items)
             {
-                if (stub.Message.author != null)
-                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.author.ID))
+                if (stub.Message.Author != null)
+                    if (App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(stub.Message.Author.ID))
                     {
                         stub.SetMessageText("<Ignored Message>");
                     }
@@ -241,7 +241,7 @@ namespace CustomDiscordClient
 
         public void RemoveMessage(DiscordMessage m)
         {
-            RemoveMessage(m.id, (m.Channel() as DiscordChannel).ID);
+            RemoveMessage(m.ID, (m.Channel() as DiscordChannel).ID);
         }
 
         public void RemoveMessage(string id, string channel_id)
@@ -259,7 +259,7 @@ namespace CustomDiscordClient
                     }
                 }
             }
-            messageHistoryCache.Remove(messageHistoryCache.Find(x => x.id == id));
+            messageHistoryCache.Remove(messageHistoryCache.Find(x => x.ID == id));
             //TODO: find a better way to do this :(((
         }
 
@@ -271,7 +271,7 @@ namespace CustomDiscordClient
                 if(m.Channel() == channel)
                 {
                     AppendMessage(m);
-                    Title = $"Dissonance - {Server.name} - #{channel.Name}";
+                    Title = $"Dissonance - {Server.Name} - #{channel.Name}";
                 }
             }
             MainScroller.ScrollToBottom();
@@ -307,7 +307,9 @@ namespace CustomDiscordClient
         {
             if (!simulatedTyping)
             {
-                mainClientReference.SimulateTyping(currentChannel);
+                // not in latest versions of DiscordSharp :(
+                //mainClientReference.SimulateTyping(currentChannel);
+
                 simulatedTyping = true;
                 Task.Run(() =>
                 {
@@ -331,7 +333,7 @@ namespace CustomDiscordClient
         {
             if (membersListBox.SelectedIndex > -1)
             {
-                DiscordMember member = Server.members.Find(x => x.Username == membersListBox.SelectedItem.ToString());
+                DiscordMember member = Server.Members.Find(x => x.Username == membersListBox.SelectedItem.ToString());
                 if (member != null)
                 {
                     UserInfo info = new UserInfo(member, mainClientReference);

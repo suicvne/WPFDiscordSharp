@@ -49,9 +49,9 @@ namespace CustomDiscordClient
 
             if (server.IconURL != null)
                 serverIcon.Source = new BitmapImage(new Uri(server.IconURL));
-            serverNameLabel.Content = server.name;
+            serverNameLabel.Content = server.Name;
 
-            this.ToolTip = server.name;
+            this.ToolTip = server.Name;
             SetupTheme();
         }
 

@@ -133,8 +133,8 @@ namespace CustomDiscordClient
             {
                 throw new ArgumentNullException("text");
             }
-            string asText = Normalize(message.content);
-            var document = RunBlockGamut(message.content, message);
+            string asText = Normalize(message.Content);
+            var document = RunBlockGamut(message.Content, message);
             var final = new List<Block>();
             foreach (var b in document)
             {
@@ -173,9 +173,9 @@ namespace CustomDiscordClient
             #region evaluate real attachments first\
             if (message != null)
             {
-                if (message.attachments.Length > 0)
+                if (message.Attachments.Length > 0)
                 {
-                    foreach (var attachment in message.attachments) //do first
+                    foreach (var attachment in message.Attachments) //do first
                     {
                         var asUri = new Uri(attachment.URL);
                         var id = $"{asUri.Host}\\{new string(asUri.LocalPath.Take(90).ToArray())}";
@@ -949,6 +949,7 @@ namespace CustomDiscordClient
             return Evaluate(text, _username, UsernameEvaluator, defaultHandler);
         }
 
+        
         private Inline UsernameEvaluator(Match match)
         {
             if (match == null)
@@ -965,7 +966,7 @@ namespace CustomDiscordClient
                 var end = span.IndexOf(">", start);
                 var userId = span.Substring(start, end - start);
 
-                var u = _mentionServer.members.Find(x=>x.ID == userId);
+                var u = _mentionServer.Members.Find(x=>x.ID == userId);
                 if (u == null)
                 {
                     Inline erri = new Run("Unknown");
@@ -985,12 +986,12 @@ namespace CustomDiscordClient
                     roleColour = App.ClientConfiguration.Settings.ColorDarkForeground;
                 u.Roles.ForEach(x =>
                 {
-                    if(x.position > -1 && x.name != "@everyone")
+                    if(x.Position > -1 && x.Name != "@everyone")
                     {
                         roleColour.A = 255;
-                        roleColour.R = (byte)x.color.R;
-                        roleColour.G = (byte)x.color.G;
-                        roleColour.B = (byte)x.color.B;
+                        roleColour.R = (byte)x.Color.R;
+                        roleColour.G = (byte)x.Color.G;
+                        roleColour.B = (byte)x.Color.B;
                     }
                 });
                 result.Foreground = new SolidColorBrush(roleColour);
@@ -1070,7 +1071,7 @@ namespace CustomDiscordClient
                 var end = span.IndexOf(">", start);
                 var channelId = span.Substring(start, end - start);
 
-                var c = _mentionServer.channels.Find(x=>x.ID == channelId);
+                var c = _mentionServer.Channels.Find(x=>x.ID == channelId);
                 if (c == null)
                 {
                     Inline erri = new Run("Unknown Channel");

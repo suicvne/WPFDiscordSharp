@@ -65,20 +65,20 @@ namespace CustomDiscordClient
             MessageIDs = new List<string>();
             Messages = new List<DiscordMessage>();
 
-            if (Message.author == null)
+            if (Message.Author == null)
                 usernameLabel.Content = "Removed User.";
             else
             {
-                usernameLabel.Content = Message.author.Username;
-                Message.author.Roles.ForEach(x =>
+                usernameLabel.Content = Message.Author.Username;
+                Message.Author.Roles.ForEach(x =>
                 {
-                    if (x.position > -1 && x.name != "@everyone")
+                    if (x.Position > -1 && x.Name != "@everyone")
                     {
                         System.Windows.Media.Color roleColour = new System.Windows.Media.Color();
                         roleColour.A = 255;
-                        roleColour.R = (byte)x.color.R;
-                        roleColour.G = (byte)x.color.G;
-                        roleColour.B = (byte)x.color.B;
+                        roleColour.R = (byte)x.Color.R;
+                        roleColour.G = (byte)x.Color.G;
+                        roleColour.B = (byte)x.Color.B;
                         usernameLabel.Foreground = new SolidColorBrush(roleColour);
                     }
                     else
@@ -86,27 +86,27 @@ namespace CustomDiscordClient
                             usernameLabel.Foreground = App.ClientConfiguration.Settings.DarkThemeForeground;
                 });
             }
-            if(Message.author != null)
-                if (Message.author.Avatar == null)
+            if(Message.Author != null)
+                if (Message.Author.Avatar == null)
                     userAvatar.Source = new BitmapImage(DiscordClientConfig.DefaultAvatarBlue);
                 else
-                    userAvatar.Source = new BitmapImage(Message.author.GetAvatarURL());
+                    userAvatar.Source = new BitmapImage(Message.Author.GetAvatarURL());
 
             //parsing
             {
                 richTextBox.Document.Blocks.Clear();
                 DiscordChannel channel = Message.Channel() as DiscordChannel;
-                var markdownParser = new CustomDiscordClient.Markdown(channel.parent, null);
-                var blocks = markdownParser.Transform(Message, $"{Message.id};{channel.ID}");
+                var markdownParser = new CustomDiscordClient.Markdown(channel.Parent, null);
+                var blocks = markdownParser.Transform(Message, $"{Message.ID};{channel.ID}");
                 richTextBox.Document.Blocks.AddRange(blocks);
-                message.Text = Message.content;
-                if (Message.content.Trim() == "" && Message.attachments.Length > 0)
+                message.Text = Message.Content;
+                if (Message.Content.Trim() == "" && Message.Attachments.Length > 0)
                     message.Text = "Attachment posted. Coming soon!";
             }
 
             ToolTip = $"Sent at {Message.timestamp}";
 
-            MessageIDs.Add(Message.id);
+            MessageIDs.Add(Message.ID);
             Messages.Add(Message);
 
             SetupContextMenu();
@@ -123,9 +123,9 @@ namespace CustomDiscordClient
             ContextMenu cm = new ContextMenu();
             MenuItem IgnoreUserMenuItem = new MenuItem();
             IgnoreUserMenuItem.Header = "Ignore user";
-            if (Message.author != null)
+            if (Message.Author != null)
             {
-                if (Message.author.ID == mainClientReference.Me.ID)
+                if (Message.Author.ID == mainClientReference.Me.ID)
                 {
                     IgnoreUserMenuItem.IsEnabled = false;
                     IgnoreUserMenuItem.Header = "I wish I could ignore myself too...";
@@ -138,7 +138,7 @@ namespace CustomDiscordClient
             {
                 if(IgnoreUserMenuItem.IsEnabled) //precaution
                 {
-                    App.ClientConfiguration.Settings.IgnoredUserIDs.Add(Message.author.ID);
+                    App.ClientConfiguration.Settings.IgnoredUserIDs.Add(Message.Author.ID);
                     if (IgnoredUserAdded != null)
                         IgnoredUserAdded(this, new EventArgs());
                 }
@@ -150,27 +150,27 @@ namespace CustomDiscordClient
 
         public void AppendMessage(DiscordMessage message)
         {
-            if(message.author != null && App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(message.author.ID))
+            if(message.Author != null && App.ClientConfiguration.Settings.IgnoredUserIDs.Contains(message.Author.ID))
             { return; }
             DiscordChannel channel = message.Channel() as DiscordChannel;
-            var markdownParser = new Markdown(channel.parent, null);
-            var blocks = markdownParser.Transform(message, $"{message.id};{channel.ID}");
+            var markdownParser = new Markdown(channel.Parent, null);
+            var blocks = markdownParser.Transform(message, $"{message.ID};{channel.ID}");
             richTextBox.Document.Blocks.AddRange(blocks);
             ToolTip = $"Sent at {message.timestamp}";
-            MessageIDs.Add(message.id);
+            MessageIDs.Add(message.ID);
             Messages.Add(message);
         }
 
         public void RemoveMessage(DiscordMessage message)
         {
-            MessageIDs.Remove(message.id);
-            string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text.Replace(message.content, "");
+            MessageIDs.Remove(message.ID);
+            string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text.Replace(message.Content, "");
         }
 
-        public void RemoveMessage(string id)
+        public void RemoveMessage(string ID)
         {
-            var message = Messages.Find(x => x.id == id);
-            MessageIDs.Remove(id);
+            var message = Messages.Find(x => x.ID == ID);
+            MessageIDs.Remove(ID);
             string oldText = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd).Text;
             Dispatcher.Invoke(() =>
             {
@@ -190,13 +190,13 @@ namespace CustomDiscordClient
 
         private string NoMarkdown(DiscordMessage message)
         {
-            string returnValue = message.content;
+            string returnValue = message.Content;
             returnValue = returnValue.Trim(new char[] { '`', '*' });
             returnValue = returnValue.Replace("```", "");
             foreach(Match match in Markdown._username.Matches(returnValue))
             {
                 string ID = match.Value.Trim(new char[] { '<', '@', '>' });
-                DiscordMember user = (Message.Channel() as DiscordChannel).parent.members.Find(x => x.ID == ID);
+                DiscordMember user = (Message.Channel() as DiscordChannel).Parent.Members.Find(x => x.ID == ID);
                 returnValue = match.Result($"@{user.Username}");
                 Markdown._username.Replace(returnValue, ID);
             }
